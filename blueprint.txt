@@ -1,0 +1,37 @@
+So, we have a google form for students and an approval method for teachers/secretary
+
+Students will have the following options: 
+    - which staff member they want to speak to
+    - ASK: reason for appointment 
+        - the secretary can either approve this or not, but if not approved an email with reasoning 
+          will be sent back to the student.  
+    - time they need
+
+    
+
+We're going to use APPS Script, basically google js 
+-use BABEL to write js and transpile it into google apps script (cos it literally is missing so many features)
+-push js to apps script project with CLASP 
+
+use Apps Script API to allow clasp tool to interact with project  code
+
+- store student data in the following: 
+  google sheet requestForm
+    - name: (String)
+    - studNum: (int)
+    - time: (int) ie 11.5, or 1.25
+    - date: (String or int) ie. 11.5 (november 5th) or just November 5th (idk which is easier in this inplementation)
+    
+HOLY CRAP, CLASP IS SO COOL, IVE NEVER USED IT BUT ITS SO COOL HOW IT WORKS WOAHHHH
+im so sad coding club is almost over, it was such a fun time
+i want to see the gr 12s again 
+i should graduate this year instead
+webscraping it so coool
+
+
+commands: 
+clasp push
+clasp pull
+clasp -w (watch) going to run and then push everytime I save (ITS REALLY COOL)
+
+typescript, autocomplter

@@ -1,0 +1,29 @@
+function submit() {
+  Logger.log("here")
+
+  array = [];
+  var form = FormApp.openById;('1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU'); //will redirect to the link of the form \
+  var responses = form.getItemResponses();
+  var count = responses.length; //the length responses
+  var responseLatest = responses[count-1]; //last response
+  var questionItems = response.getResponse();
+
+  for (var i =0; i<questionItems.length;i++){
+    var questionItem = questionItems[j];
+      var prompt = questionItem.getItem().getTitle(); //the title of the question in the google form
+      var ans = questionItem.getResponse();
+      Logger.log(prompt); //just checking it work
+      Logger.log(ans);
+      array.push(ans); //now actually updating array that wil update the google sheet
+  }
+  AddRecord(array[0],array[1],array[2],array[3]);
+}
+
+function AddRecord(name,date,reason,teacher){
+  // var url = 'https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0';
+  var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0');
+  var data = ss.getSheetByName("Sheet1");
+  data.appendRow([name,date,teacher, new Date(),reason]); //dispaly, also add date requested, on the last row available
+}
+
+

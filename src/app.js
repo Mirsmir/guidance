@@ -1,0 +1,73 @@
+var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0');
+
+var scrap = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
+
+var emails = [];
+
+function accessEmailSheet() { //this is really time consuming and stupid, doing it for the crispy UI
+    var sheet = scrap.getSheetByName('Sheet1');
+    var cols = sheet.getRange('B1:B').getValues; //present in column B
+    var colsValue = cols.getValues();
+    for (var i = 0; i < colsValue.length; i++) {
+        if (colsValue[i][0]) {
+            Logger.log(colsValue + " im the alpha");
+            emails.push(colsValue[i][0])
+        }
+    }
+    return (emails);
+}
+
+function submit() {
+    Logger.log("here")
+
+    var array = [];
+    var form = FormApp.openById('1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU'); //will redirect to the link of the form \
+    var responses = form.getResponses(); //will get all object of form
+    // var count = responses.length; //the length responses
+    var latestResp = responses[responses.length - 1]; //last response
+    var questionItems = latestResp.getItemResponses();
+    array[0] = accessEmailSheet();
+    for (var i = 1; i < questionItems.length; i++) {
+
+        var questionItem = questionItems[i];
+        var prompt = questionItem.getItem().getTitle(); //the title of the question in the google form
+        var ans = questionItem.getResponse();
+        Logger.log(prompt); //just checking it work
+        Logger.log(ans);
+        array.push(ans); //now actually updating array that wil update the google sheet
+    }
+    AddRecord(array[0], array[1], array[2], array[3]);
+    var length = array.length;
+}
+
+function AddRecord(email, date, teacher, reason) {
+    // var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0');
+    Logger.log(teacher + " are u there?????")
+    scrap.getSheetByName('Sheet1').appendRow([teacher]);
+    switch (teacher) {
+        case "Ms. Kim":
+            ss.getSheetByName("Ms. Kim").appendRow([email, date, new Date(), reason]);
+            break;
+        case "Ms. Dacey":
+            ss.getSheetByName("Ms. Dacey").appendRow([email, date, new Date, reason]);
+            break;
+        case "Ms. Avery":
+            ss.getSheetByName("Ms. Avery").appendRow([email, date, new Date(), reason]);
+            break;
+    }
+
+}
+function highlightLate() {
+
+
+}
+
+
+// var data = ss.getSheetByName("Sheet1");
+// data.appendRow([name, date, teacher, new Date(), reason]); //dispaly, also add date requested, on the last row available
+
+
+
+
+
+
