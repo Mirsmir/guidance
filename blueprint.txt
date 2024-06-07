@@ -29,11 +29,16 @@ i should graduate this year instead
 webscraping it so coool
 
 
+typescript, autocomplter
+
+/////
 commands: 
+
 clasp push
 clasp pull
 clasp -w (watch) going to run and then push everytime I save (ITS REALLY COOL)
 
 git push origin main
 
-typescript, autocomplter
+/////
+
