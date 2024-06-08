@@ -44,3 +44,5 @@ git push origin main
 
 okay, in terms of every ss having things a full week ahead, were going to make them somehow - my brain isnt working properly (sensory overloading rn)
 where, u may ask, well, i will present an answer: were going to be making them not EVERY call, thats stupid, but we'll put it at the top and hopefully that works haha (PLEASE)
+
+omg! if you appendRow([]) with sqaure brackets like that, youll use the reference instead of the real value
