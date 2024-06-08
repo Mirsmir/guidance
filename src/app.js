@@ -1,58 +1,84 @@
-var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0');
+// var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0');
 
-var scrap = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
+var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
+// const sheetName = Utilities.formatDate(day, Session.getScriptTimeZone(), "MM/dd/yyyy");
 
-var emails = [];
+var timestamp = [];
+var email = [];
+var reason = [];
+var date = [];
+var teacher = [];
 
-function accessEmailSheet() { //this is really time consuming and stupid, doing it for the crispy UI
-    var sheet = scrap.getSheetByName('Sheet1');
-    var cols = sheet.getRange('B1:B').getValues; //present in column B
+function accessemailheet() { //this is really time consuming and stupid, doing it for the crispy UI
+    var lastRow = ss.getLastRow();
+    var sheet = ss.getSheetByName('Sheet1');
+    var cols = sheet.getRange(2, 2, lastRow); //present in column B (row to start, column to start, column to stop at)
     var colsValue = cols.getValues();
     for (var i = 0; i < colsValue.length; i++) {
         if (colsValue[i][0]) {
             Logger.log(colsValue + " im the alpha");
-            emails.push(colsValue[i][0])
+            email.push(colsValue[i][0])
         }
     }
-    return (emails);
+    return (email);
 }
 
 function submit() {
-    Logger.log("here")
+    // appendCounter++;
 
-    var array = [];
-    var form = FormApp.openById('1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU'); //will redirect to the link of the form \
-    var responses = form.getResponses(); //will get all object of form
+    Logger.log("here");
+
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = spreadsheet.getActiveSheet();
+    // Get the URL of the active spreadsheet
+    var spreadsheetUrl = spreadsheet.getUrl();
+
+    // var something = SpreadsheetApp.getActiveSheet();
+
+    // var sheet = SpreadsheetApp.openById('1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE'); //will redirect to the link of the form 
+    var x = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1);
+    timestamp.push(x.getValues()); //will get all objects in range from script
+    Logger.log(x);
+    email.push(sheet.getRange(2, 2, sheet.getLastRow(), 1).getValues());
+    reason.push(sheet.getRange(2, 4, sheet.getLastRow(), 1).getValues());
+    date.push(sheet.getRange(2, 3, sheet.getLastRow(), 1).getValues());
+    teacher.push(sheet.getRange(2, 5, sheet.getLastRow(), 1).getValues());
+
     // var count = responses.length; //the length responses
-    var latestResp = responses[responses.length - 1]; //last response
-    var questionItems = latestResp.getItemResponses();
-    array[0] = accessEmailSheet();
-    for (var i = 1; i < questionItems.length; i++) {
+    // var latestResp = timestamp.length - 1; //last response
+    // var questionItems = latestResp.getItemResponses();
+    // array[0].push(accessemailsheet());
 
-        var questionItem = questionItems[i];
-        var prompt = questionItem.getItem().getTitle(); //the title of the question in the google form
-        var ans = questionItem.getResponse();
-        Logger.log(prompt); //just checking it work
-        Logger.log(ans);
-        array.push(ans); //now actually updating array that wil update the google sheet
-    }
-    AddRecord(array[0], array[1], array[2], array[3]);
-    var length = array.length;
+    // for (var i = 0; i < 5; i++) {
+
+    // var questionItem = questionItems[i];
+    // var prompt = questionItem.getItem().getTitle(); //the title of the question in the google form
+    // var ans = questionItem.getResponse();
+    Logger.log(timestamp, " ", email, " ", teacher); //just checking it work
+    // Logger.log(ans);
+    // array.push(ans); //now actually updating array that wil update the google sheet
+    // }
+    AddRecord(timestamp[timestamp.length - 1], email[email.length - 1], teacher[teacher.length - 1], date[date.length - 1], reason[reason.length - 1]);
+    // var length = array.length;
 }
 
-function AddRecord(email, date, teacher, reason) {
-    // var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0');
+function AddRecord(timestamp, email, teacher, date, reason) {
+
+    var teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1qr3CVw9SAR-xFSaGGi9gpSXyujdP9pb3wbyHGdF89DE/edit?gid=0#gid=0'); //avery
+    var teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
+    var teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
+
     Logger.log(teacher + " are u there?????")
-    scrap.getSheetByName('Sheet1').appendRow([teacher]);
+    ss.getSheetByName('Sheet1').appendRow([teacher]);
     switch (teacher) {
         case "Ms. Kim":
-            ss.getSheetByName("Ms. Kim").appendRow([email, date, new Date(), reason]);
+            teach3.getSheetByName("Ms. Kim").appendRow([timestamp, email, date, reason]);
             break;
         case "Ms. Dacey":
-            ss.getSheetByName("Ms. Dacey").appendRow([email, date, new Date, reason]);
+            teach2.getSheetByName("Ms. Dacey").appendRow([timestamp, email, date, reason]);
             break;
         case "Ms. Avery":
-            ss.getSheetByName("Ms. Avery").appendRow([email, date, new Date(), reason]);
+            teach1.getSheetByName("Ms. Avery").appendRow([timestamp, email, date, reason]);
             break;
     }
 
@@ -65,9 +91,6 @@ function highlightLate() {
 
 // var data = ss.getSheetByName("Sheet1");
 // data.appendRow([name, date, teacher, new Date(), reason]); //dispaly, also add date requested, on the last row available
-
-
-
 
 
 
