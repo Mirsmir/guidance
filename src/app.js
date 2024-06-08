@@ -9,22 +9,6 @@ var reason = [];
 var date = [];
 var teachers = [];
 
-function accessemailheet() { //this is really time consuming and stupid, doing it for the crispy UI
-    var lastRow = ss.getLastRow();
-    var sheet = ss.getSheetByName('Sheet1');
-    var cols = sheet.getRange(2, 2, lastRow); //present in column B (row to start, column to start, column to stop at)
-    var colsValue = cols.getValues();
-    for (var i = 0; i < colsValue.length; i++) {
-        if (colsValue[i][0]) {
-            Logger.log(colsValue + " im the alpha");
-            email.push(colsValue[i][0])
-        }
-    }
-    return (email);
-}
-
-
-
 function submit() {
     // appendCounter++;
 
@@ -53,6 +37,9 @@ function AddRecord(timestamp, email, teacher, date, reason) {
     var teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1qr3CVw9SAR-xFSaGGi9gpSXyujdP9pb3wbyHGdF89DE/edit?gid=0#gid=0'); //avery
     var teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
     var teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
+
+    teacher = String(teacher);
+    Logger.log("Normalized teacher: " + teacher);
 
     Logger.log(teacher + " are u there?????")
     // teach1.getSheetByName('Ms. Avery').appendRow(teacher);
