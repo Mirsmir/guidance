@@ -42,7 +42,7 @@ function submit() {
     teachers.push(sheet.getRange(2, 5, sheet.getLastRow() - 1, 1).getValues());
     days.push(sheet.getRange(2, 6, sheet.getLastRow() - 1, 1).getValues()); //okay so it starts at the 2nd row, then goes all the way down to the 
 
-    Logger.log(lastRow + "wjwjjw"); //just checking it work
+    Logger.log(lastRow + " fetched"); //just checking it work
     Logger.log(teachers);
     findTeacher(timestamps[0][lastRow], emails[0][lastRow], teachers[0][lastRow], periods[0][lastRow], reasons[0][lastRow], days[0][lastRow]);
 }
@@ -56,7 +56,7 @@ function findTeacher(timestamp, email, teacher, period, reason, day) {
     var teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
 
     Logger.log(teacher + " are u there?????")
-    var values = [timestamp[0], teacher[0], email[0], reason[0]]
+    var values = [[timestamp[0], email[0], reason[0]]] //google app script requires you to pass values into sheets with a 2D array, rows and cols, even if youre just using one row
 
     switch (String(teacher)) {
 
@@ -144,19 +144,18 @@ function readCells(ssx, range, num) {
         if (cellValue === "" || cellValue === null) {
             Logger.log(cellAddress + " is empty.");
             return {
-                val: i + num,
-                success: true
+                val: i + num, success: true
             };
         } else {
             Logger.log(cellAddress + " contains a value: " + cellValue);
         }
     }
-    // }
+    return { val: null, success: false };
 }
 
 function addRecord(ssx, row, column, values) {
-    let sheet = ssx.getSheetByName("Ms.Avery");
-    sheet.getRange(row, column, values.length, 3).setValues(values);
+    let sheet = ssx.getActiveSheet();
+    sheet.getRange(row, column, values.length, values[0].length).setValues(values);
 }
 
 
