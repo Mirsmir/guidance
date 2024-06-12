@@ -1,15 +1,27 @@
 // var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0');
 //awhjbawbhdhbawbhahjwdbhjabhjdawdhj
 var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
-// const sheetName = Utilities.formatDate(day, Session.getScriptTimeZone(), "MM/dd/yyyy");
+// const sheetName = Utilities.formatperiod(day, Session.getScriptTimeZone(), "MM/dd/yyyy");
 
-var timestamps = [];
-var emails = [];
-var reasons = [];
-var dates = [];
-var teachers = [];
+var dayCount = 5;
+var periodCount = 5;
+var timeSlot = 7;
+
+var monCount = 5;
+var tueCount = 7;
+var wedCount = 7;
+var thurCount = 7;
+var friCount = 7;
 
 function submit() {
+
+
+    var timestamps = [];
+    var days = [];
+    var emails = [];
+    var reasons = [];
+    var periods = [];
+    var teachers = [];
     // appendCounter++;
 
     Logger.log("here");
@@ -18,20 +30,24 @@ function submit() {
     var sheet = spreadsheet.getActiveSheet();//Get the URL of the active spreadsheet and sheet
     var spreadsheetUrl = spreadsheet.getUrl();
     var lastRow = sheet.getLastRow() - 2;
+
+    readCellsA3toA9();
     var x = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1);
     timestamps.push(x.getValues()); //will get all objects in range from script
-    Logger.log(x);
+    Logger.log(x); //just testing
+
     emails.push(sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).getValues());
     reasons.push(sheet.getRange(2, 4, sheet.getLastRow() - 1, 1).getValues());
-    dates.push(sheet.getRange(2, 3, sheet.getLastRow() - 1, 1).getValues());
+    periods.push(sheet.getRange(2, 3, sheet.getLastRow() - 1, 1).getValues());
     teachers.push(sheet.getRange(2, 5, sheet.getLastRow() - 1, 1).getValues());
+    days.push(sheet.getRange(2, 6, sheet.getLastRow() - 1, 1).getValues()); //okay so it starts at the 2nd row, then goes all the way down to the 
 
     Logger.log(lastRow + "wjwjjw"); //just checking it work
     Logger.log(teachers);
-    AddRecord(timestamps[0][lastRow], emails[0][lastRow], teachers[0][lastRow], dates[0][lastRow], reasons[0][lastRow]);
+    AddRecord(timestamps[0][lastRow], emails[0][lastRow], teachers[0][lastRow], periods[0][lastRow], reasons[0][lastRow], days[0][lastRow]);
 }
 
-function AddRecord(timestamp, email, teacher, date, reason) {
+function AddRecord(timestamp, email, teacher, period, reason, day) {
     Logger.log("hreer");
 
     var teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1qr3CVw9SAR-xFSaGGi9gpSXyujdP9pb3wbyHGdF89DE/edit?gid=0#gid=0'); //avery
@@ -43,25 +59,87 @@ function AddRecord(timestamp, email, teacher, date, reason) {
     switch (String(teacher)) {
 
         case "Ms. Kim":
-            teach3.getSheetByName("Ms. Kim").appendRow([timestamp[0], email[0], date[0], reason[0]]);
+            teach3.getSheetByName("Ms. Kim").appendRow([timestamp[0], email[0], period[0], reason[0], day[0]]);
             break;
         case "Ms. Dacey":
-            teach2.getSheetByName("Ms. Dacey").appendRow([timestamp[0], email[0], date[0], reason[0]]);
+            teach2.getSheetByName("Ms. Dacey").appendRow([timestamp[0], email[0], period[0], reason[0], day[0]]);
             break;
         case "Ms. Avery":
-            Logger.log(timestamp[0], email[0], date[0], reason[0])
-            teach1.getSheetByName("Ms. Avery").appendRow([timestamp[0], email[0], date[0], reason[0]]);
+            Logger.log(timestamp[0], email[0], period[0], reason[0])
+            teach1.getSheetByName("Ms. Avery").appendRow([timestamp[0], email[0], period[0], reason[0], day[0]]);
+            break;
+    }
+
+
+    switch (day) {
+        case "Monday":
+            monCount--;
+            daysAndPeriods(day, findPeriod());
+            break;
+        case "Tuesday":
+            tueCount--;
+            daysAndPeriods(day, findPeriod());
+            break;
+        case "Wednesday":
+            wedCount--;
+            daysAndPeriods(day, findPeriod());
+            break;
+        case "Thursday":
+            thurCount--;
+            daysAndPeriods(day, findPeriod());
+            break;
+        case "Friday":
+            friCount--;
+            daysAndPeriods(day, findPeriod());
             break;
     }
 
 }
-function highlightLate() {
+function daysAndPeriods(date, p) {
 
 
 }
 
+function findPeriod(p) {
+    switch (p) {
+        case "P1":
+            return (1);
+        case "P2":
+            return (2);
+        case "P3":
+            return (3);
+        case "P4":
+            return (4);
+        case "P5":
+            return (5);
+    }
+}
+
+function readCellsA3toA9() {
+
+    var sheet = ss.getActiveSheet();
+    var range = sheet.getRange("A3:A9");
+    var values = range.getValues();
+
+    // for (var i = 0; i < values.length; i++) {
+    //     Logger.log("Value in cell A" + (i + 3) + ": " + values[i][0]);
+
+    for (var i = 0; i < values.length; i++) {
+        var cellValue = values[i][0];
+        var cellAddress = "A" + (i + 3);
+        if (cellValue === "" || cellValue === null) {
+            Logger.log(cellAddress + " is empty.");
+        } else {
+            Logger.log(cellAddress + " contains a value: " + cellValue);
+        }
+    }
+    // }
+}
+
+
+
 
 // var data = ss.getSheetByName("Sheet1");
-// data.appendRow([name, date, teacher, new Date(), reason]); //dispaly, also add date requested, on the last row available
+// data.appendRow([name, period, teacher, new period(), reason]); //dispaly, also add period requested, on the last row available
 
 
