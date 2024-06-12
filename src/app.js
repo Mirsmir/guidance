@@ -63,16 +63,16 @@ function findTeacher(timestamp, email, teacher, period, reason, day) {
         case "Ms. Kim":
             teach3.getSheetByName("Ms. Kim").appendRow([timestamp[0], email[0], reason[0],]);
             //we have to find an empty slot
-            findPeriod(teach3, period[0]);
+            findPeriod(teach3, period[0], values);
             break;
         case "Ms. Dacey":
             teach2.getSheetByName("Ms. Dacey").appendRow([timestamp[0], email[0], reason[0]]);
-            findPeriod(teach2, period[0]);
+            findPeriod(teach2, period[0], values);
             break;
         case "Ms. Avery":
             Logger.log(timestamp[0], email[0], period[0], reason[0])
             teach1.getSheetByName("Ms. Avery").appendRow([timestamp[0], email[0], reason[0]]);
-            findPeriod(teach1, period[0]);
+            findPeriod(teach1, period[0], values);
             break;
     }
 
@@ -104,12 +104,11 @@ function findDay() {
 
 }
 
-function findPeriod(ssx, p) {
+function findPeriod(ssx, p, values) {
     switch (p) {
         case "P1":
             if (readCells(ssx, 'B3:B9'))
                 addRecord(ssx, 3, 2, values);
-
             break;
         case "P2":
             if (readCells(ssx, 'B12:B18'))
@@ -133,7 +132,7 @@ function findPeriod(ssx, p) {
 function readCells(ssx, range) {
 
     var sheet = ssx.getActiveSheet();
-    var range = sheet.getRange(range);
+    var range = ssx.getActiveSheet().getRange(range);
     var values = range.getValues();
 
     // for (var i = 0; i < values.length; i++) {
