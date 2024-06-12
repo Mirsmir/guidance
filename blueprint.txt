@@ -54,3 +54,5 @@ unless i can prevent the program from checking certain dates and times (this is 
 okay we won't worry about that until later 
 
 so, check teacher and period for now. 
+
+hello git are u there
