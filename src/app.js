@@ -61,17 +61,14 @@ function findTeacher(timestamp, email, teacher, period, reason, day) {
     switch (String(teacher)) {
 
         case "Ms. Kim":
-            teach3.getSheetByName("Ms. Kim").appendRow([timestamp[0], email[0], reason[0],]);
             //we have to find an empty slot
             findPeriod(teach3, period[0], values);
             break;
         case "Ms. Dacey":
-            teach2.getSheetByName("Ms. Dacey").appendRow([timestamp[0], email[0], reason[0]]);
             findPeriod(teach2, period[0], values);
             break;
         case "Ms. Avery":
             Logger.log(timestamp[0], email[0], period[0], reason[0])
-            teach1.getSheetByName("Ms. Avery").appendRow([timestamp[0], email[0], reason[0]]);
             findPeriod(teach1, period[0], values);
             break;
     }
