@@ -56,6 +56,7 @@ function findTeacher(timestamp, email, teacher, period, reason, day) {
     var teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
 
     Logger.log(teacher + " are u there?????")
+    var values = [timestamp[0], teacher[0], email[0], reason[0]]
 
     switch (String(teacher)) {
 
@@ -106,20 +107,26 @@ function findDay() {
 function findPeriod(ssx, p) {
     switch (p) {
         case "P1":
-            readCells(ssx, 'A3:A9');
-            return (1);
+            if (readCells(ssx, 'B3:B9'))
+                addRecord(ssx, 3, 2, values);
+
+            break;
         case "P2":
-            readCells(ssx, 'A12:A18');
-            return (2);
+            if (readCells(ssx, 'B12:B18'))
+                addRecord(ssx, 12, 2, values);
+            break;
         case "P3":
-            readCells(ssx, 'A21:A27');
-            return (3);
+            if (readCells(ssx, 'B21:B27'))
+                addRecord(ssx, 21, 2, values);
+            break;
         case "P4":
-            readCells(ssx, 'A30:A36');
-            return (4);
+            if (readCells(ssx, 'B30:B36'))
+                addRecord(ssx, 30, 2, values)
+            break;
         case "P5":
-            readCells(ssx, 'A39:A45');
-            return (5);
+            if (readCells(ssx, 'B39:B45'))
+                addRecord(ssx, 38, 2, values);
+            break;
     }
 }
 
@@ -137,7 +144,7 @@ function readCells(ssx, range) {
         var cellAddress = "A" + (i + 3);
         if (cellValue === "" || cellValue === null) {
             Logger.log(cellAddress + " is empty.");
-            addRecord(ssx,)
+            return (true);
         } else {
             Logger.log(cellAddress + " contains a value: " + cellValue);
         }
@@ -146,7 +153,7 @@ function readCells(ssx, range) {
 }
 
 function addRecord(ssx, row, column, values) {
-    ssx.getActiveSheet().appendRow([timestamp[0], email[0], period[0], reason[0], day[0]]);
+    ssx.getActiveSheet().getRange(row, column, values.length, values[0].length).setValues(values);
 }
 
 
