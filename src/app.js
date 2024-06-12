@@ -131,7 +131,6 @@ function findPeriod(ssx, p, values) {
 
 function readCells(ssx, range, num) {
 
-    var sheet = ssx.getActiveSheet();
     var data = ssx.getActiveSheet().getRange(range);
     var values = data.getValues();
 
@@ -144,13 +143,13 @@ function readCells(ssx, range, num) {
         if (cellValue === "" || cellValue === null) {
             Logger.log(cellAddress + " is empty.");
             return {
-                val: (i + num, num + 6), success: true
+                num: (i + num), success: true
             };
         } else {
             Logger.log(cellAddress + " contains a value: " + cellValue);
         }
     }
-    return { val: null, success: false };
+    return { num: null, success: false };
 }
 
 function addRecord(ssx, row, column, values) {
