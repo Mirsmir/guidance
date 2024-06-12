@@ -108,7 +108,7 @@ function findPeriod(ssx, p, values) {
     switch (p) {
         case "P1":
             if (readCells(ssx, 'B3:B9', 3).success)
-                addRecord(ssx, 3, 2, values);
+                addRecord(ssx, readCells(ssx, 'B3:B9', 3).num, 2, values);
             break;
         case "P2":
             if (readCells(ssx, 'B12:B18', 12).success)
@@ -144,7 +144,7 @@ function readCells(ssx, range, num) {
         if (cellValue === "" || cellValue === null) {
             Logger.log(cellAddress + " is empty.");
             return {
-                val: i + num, success: true
+                val: (i + num, num + 6), success: true
             };
         } else {
             Logger.log(cellAddress + " contains a value: " + cellValue);
