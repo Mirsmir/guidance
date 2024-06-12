@@ -107,43 +107,46 @@ function findDay() {
 function findPeriod(ssx, p, values) {
     switch (p) {
         case "P1":
-            if (readCells(ssx, 'B3:B9'))
+            if (readCells(ssx, 'B3:B9', 3).success)
                 addRecord(ssx, 3, 2, values);
             break;
         case "P2":
-            if (readCells(ssx, 'B12:B18'))
+            if (readCells(ssx, 'B12:B18', 12).success)
                 addRecord(ssx, 12, 2, values);
             break;
         case "P3":
-            if (readCells(ssx, 'B21:B27'))
+            if (readCells(ssx, 'B21:B27', 21).success)
                 addRecord(ssx, 21, 2, values);
             break;
         case "P4":
-            if (readCells(ssx, 'B30:B36'))
+            if (readCells(ssx, 'B30:B36', 30).success)
                 addRecord(ssx, 30, 2, values)
             break;
         case "P5":
-            if (readCells(ssx, 'B39:B45'))
+            if (readCells(ssx, 'B39:B45', 39).success)
                 addRecord(ssx, 38, 2, values);
             break;
     }
 }
 
-function readCells(ssx, range) {
+function readCells(ssx, range, num) {
 
     var sheet = ssx.getActiveSheet();
-    var range = ssx.getActiveSheet().getRange(range);
-    var values = range.getValues();
+    var data = ssx.getActiveSheet().getRange(range);
+    var values = data.getValues();
 
     // for (var i = 0; i < values.length; i++) {
     //     Logger.log("Value in cell A" + (i + 3) + ": " + values[i][0]);
 
     for (var i = 0; i < values.length; i++) {
         var cellValue = values[i][0];
-        var cellAddress = "A" + (i + 3);
+        var cellAddress = "B" + (i + num);
         if (cellValue === "" || cellValue === null) {
             Logger.log(cellAddress + " is empty.");
-            return (true);
+            return {
+                val: i + num,
+                success: true
+            };
         } else {
             Logger.log(cellAddress + " contains a value: " + cellValue);
         }
@@ -152,7 +155,8 @@ function readCells(ssx, range) {
 }
 
 function addRecord(ssx, row, column, values) {
-    ssx.getActiveSheet().getRange(row, column, values.length, values[0].length).setValues(values);
+    let sheet = ssx.getSheetByName("Ms.Avery");
+    sheet.getRange(row, column, values.length, 3).setValues(values);
 }
 
 
