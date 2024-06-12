@@ -1,6 +1,6 @@
 // var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0');
 //awhjbawbhdhbawbhahjwdbhjabhjdawdhj
-var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
+const ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
 // const sheetName = Utilities.formatperiod(day, Session.getScriptTimeZone(), "MM/dd/yyyy");
 
 var dayCount = 5;
@@ -121,8 +121,10 @@ function findPeriod(ssx, p, values) {
             break;
         case "P5":
             if (readCells(ssx, 'B39:B45', 39).success)
-                addRecord(ssx, 38, 2, values);
+                addRecord(ssx, 39, 2, values);
             break;
+        default:
+            Logger.log("Could not access specified period");
     }
 }
 
@@ -153,11 +155,3 @@ function addRecord(ssx, row, column, values) {
     let sheet = ssx.getActiveSheet();
     sheet.getRange(row, column, values.length, values[0].length).setValues(values);
 }
-
-
-
-
-// var data = ss.getSheetByName("Sheet1");
-// data.appendRow([name, period, teacher, new period(), reason]); //dispaly, also add period requested, on the last row available
-
-
