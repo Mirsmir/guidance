@@ -46,3 +46,11 @@ okay, in terms of every ss having things a full week ahead, were going to make t
 where, u may ask, well, i will present an answer: were going to be making them not EVERY call, thats stupid, but we'll put it at the top and hopefully that works haha (PLEASE)
 
 omg! if you appendRow([]) with sqaure brackets like that, youll use the reference instead of the real value
+
+okay, so we're going to have to first check what teacher they selected, then we'll check what period they want
+now the issue will be making new stupid google sheets. we have to make sure they're named monday, tuesday, wednesday, and so on
+then, starting with the day after the day they're booking their appointments (meaning you have to book a day in advance) holy crap but they have to be able to book on weekends then? 
+unless i can prevent the program from checking certain dates and times (this is so annoying)
+okay we won't worry about that until later 
+
+so, check teacher and period for now. 

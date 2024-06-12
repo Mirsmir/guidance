@@ -31,7 +31,7 @@ function submit() {
     var spreadsheetUrl = spreadsheet.getUrl();
     var lastRow = sheet.getLastRow() - 2;
 
-    readCellsA3toA9();
+
     var x = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1);
     timestamps.push(x.getValues()); //will get all objects in range from script
     Logger.log(x); //just testing
@@ -44,10 +44,11 @@ function submit() {
 
     Logger.log(lastRow + "wjwjjw"); //just checking it work
     Logger.log(teachers);
-    AddRecord(timestamps[0][lastRow], emails[0][lastRow], teachers[0][lastRow], periods[0][lastRow], reasons[0][lastRow], days[0][lastRow]);
+    findTeacher(timestamps[0][lastRow], emails[0][lastRow], teachers[0][lastRow], periods[0][lastRow], reasons[0][lastRow], days[0][lastRow]);
 }
 
-function AddRecord(timestamp, email, teacher, period, reason, day) {
+
+function findTeacher(timestamp, email, teacher, period, reason, day) {
     Logger.log("hreer");
 
     var teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1qr3CVw9SAR-xFSaGGi9gpSXyujdP9pb3wbyHGdF89DE/edit?gid=0#gid=0'); //avery
@@ -59,18 +60,24 @@ function AddRecord(timestamp, email, teacher, period, reason, day) {
     switch (String(teacher)) {
 
         case "Ms. Kim":
-            teach3.getSheetByName("Ms. Kim").appendRow([timestamp[0], email[0], period[0], reason[0], day[0]]);
+            teach3.getSheetByName("Ms. Kim").appendRow([timestamp[0], email[0], reason[0],]);
+            //we have to find an empty slot
+            findPeriod(teach3, period[0]);
             break;
         case "Ms. Dacey":
-            teach2.getSheetByName("Ms. Dacey").appendRow([timestamp[0], email[0], period[0], reason[0], day[0]]);
+            teach2.getSheetByName("Ms. Dacey").appendRow([timestamp[0], email[0], reason[0]]);
+            findPeriod(teach2, period[0]);
             break;
         case "Ms. Avery":
             Logger.log(timestamp[0], email[0], period[0], reason[0])
-            teach1.getSheetByName("Ms. Avery").appendRow([timestamp[0], email[0], period[0], reason[0], day[0]]);
+            teach1.getSheetByName("Ms. Avery").appendRow([timestamp[0], email[0], reason[0]]);
+            findPeriod(teach1, period[0]);
             break;
     }
 
+}
 
+function findDay() {
     switch (day) {
         case "Monday":
             monCount--;
@@ -95,30 +102,31 @@ function AddRecord(timestamp, email, teacher, period, reason, day) {
     }
 
 }
-function daysAndPeriods(date, p) {
 
-
-}
-
-function findPeriod(p) {
+function findPeriod(ssx, p) {
     switch (p) {
         case "P1":
+            readCells(ssx, 'A3:A9');
             return (1);
         case "P2":
+            readCells(ssx, 'A12:A18');
             return (2);
         case "P3":
+            readCells(ssx, 'A21:A27');
             return (3);
         case "P4":
+            readCells(ssx, 'A30:A36');
             return (4);
         case "P5":
+            readCells(ssx, 'A39:A45');
             return (5);
     }
 }
 
-function readCellsA3toA9() {
+function readCells(ssx, range) {
 
-    var sheet = ss.getActiveSheet();
-    var range = sheet.getRange("A3:A9");
+    var sheet = ssx.getActiveSheet();
+    var range = sheet.getRange(range);
     var values = range.getValues();
 
     // for (var i = 0; i < values.length; i++) {
@@ -129,11 +137,16 @@ function readCellsA3toA9() {
         var cellAddress = "A" + (i + 3);
         if (cellValue === "" || cellValue === null) {
             Logger.log(cellAddress + " is empty.");
+            addRecord(ssx,)
         } else {
             Logger.log(cellAddress + " contains a value: " + cellValue);
         }
     }
     // }
+}
+
+function addRecord(ssx, row, column, values) {
+    ssx.getActiveSheet().appendRow([timestamp[0], email[0], period[0], reason[0], day[0]]);
 }
 
 
