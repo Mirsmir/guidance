@@ -73,31 +73,48 @@ function findPeriod(ssx, p, values) {
     Logger.log(p);
     switch (p) {
         case "P1":
-            Logger.log(findDayOfWeek(values) + " day of the week in the findPeriod function");
-            if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).success) { //wanna check availabiloty of the period in that specific day
+            Logger.log(findDayOfWeek(values[0][0]) + " day of the week in the findPeriod function");
+            if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values[0][0])).success) { //wanna check availabiloty of the period in that specific day
                 Logger.log("found it here");
-                addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
+                addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values[0][0])).num, 2, values, findDayOfWeek(values[0][0]));
             }
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
-
+                Logger.log("unavailable.");
+                repeatSearch(findDayOfWeek(values[0][0]), 'B3:B9', ssx, 3, values);
             }
             break;
         case "P2":
-            if (readCells(ssx, 'B12:B18', 12, findDayOfWeek(values)).success)
-                addRecord(ssx, readCells(ssx, 'B12:B18', 12, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+            if (readCells(ssx, 'B12:B18', 12, findDayOfWeek(values[0][0])).success)
+                addRecord(ssx, readCells(ssx, 'B12:B18', 12, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
+            else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
+                Logger.log("unavailable.");
+                repeatSearch(findDayOfWeek(values[0][0]), 'B12:B18', ssx, 12, values);
+            }
             break;
         case "P3":
             Logger.log("are you here RIGHT NOW ARE YOU HERE");
-            if (readCells(ssx, 'B21:B27', 21, findDayOfWeek(values)).success)
-                addRecord(ssx, readCells(ssx, 'B21:B27', 21, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+            if (readCells(ssx, 'B21:B27', 21, findDayOfWeek(values[0][0])).success)
+                addRecord(ssx, readCells(ssx, 'B21:B27', 21, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
+            else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
+                Logger.log("unavailable.");
+                (findDayOfWeek(values[0][0]), 'B21:B27', ssx, 21, values);
+            }
             break;
         case "P4":
-            if (readCells(ssx, 'B30:B36', 30, findDayOfWeek(values)).success)
-                addRecord(ssx, readCells(ssx, 'B30:B36', 30, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+            if (readCells(ssx, 'B30:B36', 30, findDayOfWeek(values[0][0])).success)
+                addRecord(ssx, readCells(ssx, 'B30:B36', 30, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
+            else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
+                Logger.log("unavailable.");
+                (findDayOfWeek(values[0][0]), 'B30:B36', ssx, 30, values);
+            }
             break;
         case "P5":
-            if (readCells(ssx, 'B39:B45', 39, findDayOfWeek(values)).success)
-                addRecord(ssx, readCells(ssx, 'B39:B45', 39, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+            if (readCells(ssx, 'B39:B45', 39, findDayOfWeek(values[0][0])).success)
+                addRecord(ssx, readCells(ssx, 'B39:B45', 39, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
+            else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
+                Logger.log("unavailable.");
+                (findDayOfWeek(values[0][0]), 'B39:B45', ssx, 39, values);
+            }
             break;
         default:
             Logger.log("Could not access specified period");
@@ -105,7 +122,7 @@ function findPeriod(ssx, p, values) {
 }
 
 function findDayOfWeek(values) {
-    var dayOfWeek = values[0][0].getDay();
+    var dayOfWeek = values.getDay();
     Logger.log(dayOfWeek + " day of wwek?");
     switch (parseInt(dayOfWeek)) {
         //these are all moved up by 1 value, to ensure that students do not get appoitned on a date earlier than their submission.
@@ -119,9 +136,66 @@ function findDayOfWeek(values) {
             return "Thursday";
         case 4:
             return "Friday";
-        case 5: //submitted sunday, moved to monday
+        case 5: //submitted friday, moved to monday
+            return "Monday";
+        case 6:
             return "Monday";
     }
+}
+
+function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search through it again, until we've checked all days until the end.
+    switch (weekDay) {
+        case 0: //they searched for monday, and it was unavailable, meaning they have to search for 4 more days
+            for (var i = 1; i < 5; i++) {
+                if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
+                    addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+                }
+                else {
+                    autoEmail(values[0][1], "Appointment Unavailability", "Please submit another request startin the following week");
+                }
+            }
+            break;
+        case 1:
+            for (var i = 2; i < 5; i++) {
+                if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
+                    addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+                }
+                else {
+                    autoEmail(values[0][1], "Appointment Unavailability", "Please submit another request startin the following week");
+                }
+
+            }
+            break;
+        case 2:
+            for (var i = 3; i < 5; i++) {
+                if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
+                    addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+                }
+                else {
+                    autoEmail(values[0][1], "Appointment Unavailability", "Please submit another request startin the following week");
+                }
+
+            }
+            break;
+        case 3:
+            for (var i = 4; i < 5; i++) {
+                if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
+                    addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+                }
+                else {
+                    autoEmail(values[0][1], "Appointment Unavailability", "Please submit another request startin the following week");
+                }
+
+            }
+            break;
+        case 4:
+            return "Please submit another response starting the following week.";
+        case 5:
+            return "Please submit another response starting the following week.";
+        case 6:
+            return "Please submit another response starting the following week."
+    }
+
 }
 
 function readCells(ssx, range, num, weekDay) {
@@ -143,20 +217,19 @@ function readCells(ssx, range, num, weekDay) {
         }
     }
     Logger.log("All cells are full, I must move to the 2nd next day.")
+
     return { val: null, success: false };
 }
 
 function addRecord(ssx, row, column, values, dayOfWeek) {
     let sheet = ssx.getSheetByName(dayOfWeek);
     sheet.getRange(row, column, values.length, values[0].length).setValues(values);
-    autoEmail(values[0][1]);
+    autoEmail(values[0][1], 'Guidance Appointment Confirmation', 'Your request has been logged in our waitlist. Please await a confirmation email within the following day.');
 }
 
-function autoEmail(email) {
+function autoEmail(email, subject, body) {
     Logger.log(email);
     try {
-        let subject = 'Guidance Appointment Confirmation';
-        let body = 'Your request has been logged in our waitlist. Please await a confirmation email within the following day.';
         MailApp.sendEmail(email, subject, body);
 
         Logger.log("Successfully sent email")
