@@ -97,7 +97,7 @@ function findPeriod(ssx, p, values) {
                 addRecord(ssx, readCells(ssx, 'B21:B27', 21, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
                 Logger.log("unavailable.");
-                (findDayOfWeek(values[0][0]), 'B21:B27', ssx, 21, values);
+                repeatSearch(findDayOfWeek(values[0][0]), 'B21:B27', ssx, 21, values);
             }
             break;
         case "P4":
@@ -105,7 +105,7 @@ function findPeriod(ssx, p, values) {
                 addRecord(ssx, readCells(ssx, 'B30:B36', 30, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
                 Logger.log("unavailable.");
-                (findDayOfWeek(values[0][0]), 'B30:B36', ssx, 30, values);
+                repeatSearch(findDayOfWeek(values[0][0]), 'B30:B36', ssx, 30, values);
             }
             break;
         case "P5":
@@ -113,7 +113,7 @@ function findPeriod(ssx, p, values) {
                 addRecord(ssx, readCells(ssx, 'B39:B45', 39, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
                 Logger.log("unavailable.");
-                (findDayOfWeek(values[0][0]), 'B39:B45', ssx, 39, values);
+                repeatSearch(findDayOfWeek(values[0][0]), 'B39:B45', ssx, 39, values);
             }
             break;
         default:
@@ -145,17 +145,17 @@ function findDayOfWeek(values) {
 
 function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search through it again, until we've checked all days until the end.
     switch (weekDay) {
-        case 0: //they searched for monday, and it was unavailable, meaning they have to search for 4 more days
+        case "Monday": //they searched for monday, and it was unavailable, meaning they have to search for 4 more days
             for (var i = 1; i < 5; i++) {
                 if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
-                    addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+                    addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
                 }
                 else {
                     autoEmail(values[0][1], "Appointment Unavailability", "Please submit another request startin the following week");
                 }
             }
             break;
-        case 1:
+        case "Tuesday":
             for (var i = 2; i < 5; i++) {
                 if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
                     addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
@@ -166,10 +166,10 @@ function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search th
 
             }
             break;
-        case 2:
+        case "Wednesday":
             for (var i = 3; i < 5; i++) {
                 if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
-                    addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+                    addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(i)).val, 2, values, findDayOfWeek(i));
                 }
                 else {
                     autoEmail(values[0][1], "Appointment Unavailability", "Please submit another request startin the following week");
@@ -177,10 +177,11 @@ function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search th
 
             }
             break;
-        case 3:
+        case "Thursday":
             for (var i = 4; i < 5; i++) {
+                Logger.log(findDayOfWeek(4.0));
                 if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
-                    addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
+                    addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(i)).val, 2, values, findDayOfWeek(i));
                 }
                 else {
                     autoEmail(values[0][1], "Appointment Unavailability", "Please submit another request startin the following week");
@@ -188,11 +189,11 @@ function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search th
 
             }
             break;
-        case 4:
+        case "Friday":
             return "Please submit another response starting the following week.";
-        case 5:
+        case "Monday":
             return "Please submit another response starting the following week.";
-        case 6:
+        case "Monday":
             return "Please submit another response starting the following week."
     }
 
