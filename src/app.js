@@ -72,7 +72,6 @@ function findTeacher(timestamp, email, teacher, period, reason) {
             break;
     }
 
-    createNewSheet(new Date, teach1);
 
 }
 
@@ -129,51 +128,24 @@ function addRecord(ssx, row, column, values) {
     sheet.getRange(row, column, values.length, values[0].length).setValues(values);
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////
 
-function createNewSheet(day, ssx) {
-    const sheetName = Utilities.formatDate(day, Session.getScriptTimeZone(), "MM/dd/yyyy");
+//automatic creating and deletion of week day sheets:
 
-    if (ssx.getSheetByName(sheetName)) { //breaks if a sheet with the same name is created
-        return;
-    }
+function createSheets(ssx) {
+    var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-    // const templateSheet = ss.getSheetByName("Template");
-    if (ssx.getSheetByName("Template")) {
-        const newSheet = ss.insertSheet(sheetName);
-        ssx.getSheetByName("Template").activate();
-        const rangeToCopy = ssx.getSheetByName("Template").getDataRange();
-        rangeToCopy.copyTo(newSheet.getRange(1, 1));
-    }
+    // deletion process, if same name found, delete it.
+    weekdays.forEach(function (day) { //beautiful for each
+        var s = ssx.getSheetByName(day);
+        if (s) {
+            ssx.deleteSheet(s); //if it finds the same name
+        }
+    });
+
+    //now that its ensured that the previous ones are gone, make a new batch
+    weekdays.forEach(function (day) {
+        ssx.insertSheet(day);
+    });
+
 }
-
-function createNextWeek() {
-    const nextWeek = new Date();
-    nextWeek.setDate(new Date().getDate() + 7);
-
-    // No tests are scheduled on weekends
-    const dayOfWeek = nextWeek.getDay();
-    if (dayOfWeek == 6 || dayOfWeek == 7) {
-        return;
-    }
-
-    createNewSheet(nextWeek);
-}
-
-
-
-function createNextWeek() {
-    const nextWeek = new Date();
-    nextWeek.setDate(new Date().getDate() + 7);
-
-    // No tests are scheduled on weekends
-    const dayOfWeek = nextWeek.getDay();
-    if (dayOfWeek == 6 || dayOfWeek == 7) {
-        return;
-    }
-
-    createNewSheet(nextWeek);
-}
-
