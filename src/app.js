@@ -81,25 +81,24 @@ function findPeriod(ssx, p, values) {
             Logger.log(findDayOfWeek(values) + " day of the week in the findPeriod function");
             if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).success) {
                 Logger.log("found it here");
-                addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).num, 2, values);
+                addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
             }
             break;
         case "P2":
             if (readCells(ssx, 'B12:B18', 12).success)
-                addRecord(ssx, readCells(ssx, 'B12:B18', 3, findDayOfWeek(values)).num, 2, values);
+                addRecord(ssx, readCells(ssx, 'B12:B18', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
             break;
         case "P3":
             if (readCells(ssx, 'B21:B27', 21).success)
-                addRecord(ssx, readCells(ssx, 'B21:B27', 3, findDayOfWeek(values)).num, 2, values);
+                addRecord(ssx, readCells(ssx, 'B21:B27', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
             break;
         case "P4":
             if (readCells(ssx, 'B30:B36', 30).success)
-                addRecord(ssx, readCells(ssx, 'B30:B36', 3, findDayOfWeek(values)).num, 2, values)
-            else
-                break;
+                addRecord(ssx, readCells(ssx, 'B30:B36', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
+            break;
         case "P5":
             if (readCells(ssx, 'B39:B45', 39).success)
-                addRecord(ssx, readCells(ssx, 'B39:B45', 3, findDayOfWeek(values)).num, 2, values);
+                addRecord(ssx, readCells(ssx, 'B39:B45', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
             break;
         default:
             Logger.log("Could not access specified period");
@@ -147,8 +146,8 @@ function readCells(ssx, range, num, weekDay) {
     return { num: null, success: false };
 }
 
-function addRecord(ssx, row, column, values) {
-    let sheet = ssx.getActiveSheet();
+function addRecord(ssx, row, column, values, dayOfWeek) {
+    let sheet = ssx.getSheetByName(dayOfWeek);
     sheet.getRange(row, column, values.length, values[0].length).setValues(values);
 }
 
