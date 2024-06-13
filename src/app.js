@@ -1,17 +1,9 @@
 // var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0');
 //awhjbawbhdhbawbhahjwdbhjabhjdawdhj
 const ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
+const MailApp = GmailApp;
 // const sheetName = Utilities.formatperiod(day, Session.getScriptTimeZone(), "MM/dd/yyyy");
 
-var dayCount = 5;
-var periodCount = 5;
-var timeSlot = 7;
-
-var monCount = 5;
-var tueCount = 7;
-var wedCount = 7;
-var thurCount = 7;
-var friCount = 7;
 
 function submit() {
     var timestamps = [];
@@ -20,7 +12,6 @@ function submit() {
     var reasons = [];
     var periods = [];
     var teachers = [];
-    // appendCounter++;
 
     Logger.log("here");
 
@@ -79,25 +70,28 @@ function findPeriod(ssx, p, values) {
     switch (p) {
         case "P1":
             Logger.log(findDayOfWeek(values) + " day of the week in the findPeriod function");
-            if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).success) {
+            if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).success) { //wanna check availabiloty of the period in that specific day
                 Logger.log("found it here");
                 addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
             }
+            else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
+
+            }
             break;
         case "P2":
-            if (readCells(ssx, 'B12:B18', 12).success)
+            if (readCells(ssx, 'B12:B18', 12, findDayOfWeek(values)).success)
                 addRecord(ssx, readCells(ssx, 'B12:B18', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
             break;
         case "P3":
-            if (readCells(ssx, 'B21:B27', 21).success)
+            if (readCells(ssx, 'B21:B27', 21, findDayOfWeek(values)).success)
                 addRecord(ssx, readCells(ssx, 'B21:B27', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
             break;
         case "P4":
-            if (readCells(ssx, 'B30:B36', 30).success)
+            if (readCells(ssx, 'B30:B36', 30, findDayOfWeek(values)).success)
                 addRecord(ssx, readCells(ssx, 'B30:B36', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
             break;
         case "P5":
-            if (readCells(ssx, 'B39:B45', 39).success)
+            if (readCells(ssx, 'B39:B45', 39, findDayOfWeek(values)).success)
                 addRecord(ssx, readCells(ssx, 'B39:B45', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
             break;
         default:
@@ -149,9 +143,22 @@ function readCells(ssx, range, num, weekDay) {
 function addRecord(ssx, row, column, values, dayOfWeek) {
     let sheet = ssx.getSheetByName(dayOfWeek);
     sheet.getRange(row, column, values.length, values[0].length).setValues(values);
+    autoEmail(values[0][1]);
 }
 
+function autoEmail(email) {
+    Logger.log(email);
+    try {
+        let subject = 'Guidance Appointment Confirmation';
+        let body = 'Your request has been logged in our waitlist. Please await a confirmation email within the following day.';
+        MailApp.sendEmail(email, subject, body);
 
+        Logger.log("Successfully sent email")
+
+    } catch (Exception) {
+        Logger.log("email failed to send: " + Exception.message);
+    }
+}
 
 //automatic creating and deletion of week day sheets:
 function createSheets(ssx) {
