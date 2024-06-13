@@ -56,3 +56,9 @@ okay we won't worry about that until later
 so, check teacher and period for now. 
 
 hello git are u there
+
+just have a few things left to do:
+  - gotta figure out how to make a new day 
+  - gotta do random numbers (god i will cry)
+  - gotta do (i frogot what i was going to type)
+  

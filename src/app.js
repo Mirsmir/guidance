@@ -15,7 +15,6 @@ var friCount = 7;
 
 function submit() {
 
-
     var timestamps = [];
     var days = [];
     var emails = [];
@@ -44,16 +43,16 @@ function submit() {
 
     Logger.log(lastRow + " fetched"); //just checking it work
     Logger.log(teachers);
-    findTeacher(timestamps[0][lastRow], emails[0][lastRow], teachers[0][lastRow], periods[0][lastRow], reasons[0][lastRow], days[0][lastRow]);
+    findTeacher(timestamps[0][lastRow], emails[0][lastRow], teachers[0][lastRow], periods[0][lastRow], reasons[0][lastRow]);
 }
 
 
-function findTeacher(timestamp, email, teacher, period, reason, day) {
+function findTeacher(timestamp, email, teacher, period, reason) {
     Logger.log("hreer");
 
-    var teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1qr3CVw9SAR-xFSaGGi9gpSXyujdP9pb3wbyHGdF89DE/edit?gid=0#gid=0'); //avery
-    var teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
-    var teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
+    const teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1qr3CVw9SAR-xFSaGGi9gpSXyujdP9pb3wbyHGdF89DE/edit?gid=0#gid=0'); //avery
+    const teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
+    const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
 
     Logger.log(teacher + " are u there?????")
     var values = [[timestamp[0], email[0], reason[0]]] //google app script requires you to pass values into sheets with a 2D array, rows and cols, even if youre just using one row
@@ -73,33 +72,10 @@ function findTeacher(timestamp, email, teacher, period, reason, day) {
             break;
     }
 
-}
-
-function findDay() {
-    switch (day) {
-        case "Monday":
-            monCount--;
-            daysAndPeriods(day, findPeriod());
-            break;
-        case "Tuesday":
-            tueCount--;
-            daysAndPeriods(day, findPeriod());
-            break;
-        case "Wednesday":
-            wedCount--;
-            daysAndPeriods(day, findPeriod());
-            break;
-        case "Thursday":
-            thurCount--;
-            daysAndPeriods(day, findPeriod());
-            break;
-        case "Friday":
-            friCount--;
-            daysAndPeriods(day, findPeriod());
-            break;
-    }
+    createNewSheet(new Date, teach1);
 
 }
+
 
 function findPeriod(ssx, p, values) {
     switch (p) {
@@ -133,9 +109,6 @@ function readCells(ssx, range, num) {
     var data = ssx.getActiveSheet().getRange(range);
     var values = data.getValues();
 
-    // for (var i = 0; i < values.length; i++) {
-    //     Logger.log("Value in cell A" + (i + 3) + ": " + values[i][0]);
-
     for (var i = 0; i < values.length; i++) {
         var cellValue = values[i][0];
         var cellAddress = "B" + (i + num);
@@ -155,3 +128,52 @@ function addRecord(ssx, row, column, values) {
     let sheet = ssx.getActiveSheet();
     sheet.getRange(row, column, values.length, values[0].length).setValues(values);
 }
+
+
+
+////////////////////////////////////////////////////////////////////////
+
+function createNewSheet(day, ssx) {
+    const sheetName = Utilities.formatDate(day, Session.getScriptTimeZone(), "MM/dd/yyyy");
+
+    if (ssx.getSheetByName(sheetName)) { //breaks if a sheet with the same name is created
+        return;
+    }
+
+    // const templateSheet = ss.getSheetByName("Template");
+    if (ssx.getSheetByName("Template")) {
+        const newSheet = ss.insertSheet(sheetName);
+        ssx.getSheetByName("Template").activate();
+        const rangeToCopy = ssx.getSheetByName("Template").getDataRange();
+        rangeToCopy.copyTo(newSheet.getRange(1, 1));
+    }
+}
+
+function createNextWeek() {
+    const nextWeek = new Date();
+    nextWeek.setDate(new Date().getDate() + 7);
+
+    // No tests are scheduled on weekends
+    const dayOfWeek = nextWeek.getDay();
+    if (dayOfWeek == 6 || dayOfWeek == 7) {
+        return;
+    }
+
+    createNewSheet(nextWeek);
+}
+
+
+
+function createNextWeek() {
+    const nextWeek = new Date();
+    nextWeek.setDate(new Date().getDate() + 7);
+
+    // No tests are scheduled on weekends
+    const dayOfWeek = nextWeek.getDay();
+    if (dayOfWeek == 6 || dayOfWeek == 7) {
+        return;
+    }
+
+    createNewSheet(nextWeek);
+}
+
