@@ -79,7 +79,8 @@ function findTeacher(timestamp, email, teacher, period, reason) {
 function findPeriod(ssx, p, values) {
     switch (p) {
         case "P1":
-            if (readCells(ssx, 'B3:B9', 3).success)
+            Logger.log(findDayOfWeek(values));
+            if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).success)
                 addRecord(ssx, readCells(ssx, 'B3:B9', 3).num, 2, values);
             break;
         case "P2":
@@ -93,7 +94,8 @@ function findPeriod(ssx, p, values) {
         case "P4":
             if (readCells(ssx, 'B30:B36', 30).success)
                 addRecord(ssx, 30, 2, values)
-            break;
+            else
+                break;
         case "P5":
             if (readCells(ssx, 'B39:B45', 39).success)
                 addRecord(ssx, 39, 2, values);
@@ -103,9 +105,26 @@ function findPeriod(ssx, p, values) {
     }
 }
 
-function readCells(ssx, range, num) {
+function findDayOfWeek(values) {
+    var dayOfWeek = values[0][0].getDay();
+    Logger.log(dayOfWeek + " day of wwek?");
+    switch (parseInt(dayOfWeek)) {
+        case 1:
+            return "Monday";
+        case 2:
+            return "Tuesday";
+        case 3:
+            return "Wednesday";
+        case 4:
+            return "Thursday";
+        case 5:
+            return "Friday";
+    }
+}
 
-    var data = ssx.getActiveSheet().getRange(range);
+function readCells(ssx, range, num, weekDay) {
+
+    var data = ssx.getSheetByName(String(weekDay)).getRange(range);
     var values = data.getValues();
 
     for (var i = 0; i < values.length; i++) {
@@ -120,6 +139,7 @@ function readCells(ssx, range, num) {
             Logger.log(cellAddress + " contains a value: " + cellValue);
         }
     }
+    Logger.log("All cells are full, I must move to the 2nd next day.")
     return { num: null, success: false };
 }
 
@@ -128,24 +148,27 @@ function addRecord(ssx, row, column, values) {
     sheet.getRange(row, column, values.length, values[0].length).setValues(values);
 }
 
-////////////////////////////////////////////////////////////////////////
+
 
 //automatic creating and deletion of week day sheets:
-
 function createSheets(ssx) {
     var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-    // deletion process, if same name found, delete it.
-    weekdays.forEach(function (day) { //beautiful for each
-        var s = ssx.getSheetByName(day);
-        if (s) {
-            ssx.deleteSheet(s); //if it finds the same name
-        }
-    });
-
-    //now that its ensured that the previous ones are gone, make a new batch
-    weekdays.forEach(function (day) {
-        ssx.insertSheet(day);
-    });
-
 }
+// deletion process, if same name found, delete it.
+weekdays.forEach(function (day) { //beautiful for each
+    var s = ssx.getSheetByName(day);
+    if (s) {
+        ssx.deleteSheet(s); //if it finds the same name
+    }
+});
+
+//now that its ensured that the previous ones are gone, make a new batch
+
+const rangeToCopy = ssx.getSheetByName("Template").getDataRange();
+weekdays.forEach(function (day) {
+    const sheet = ssx.insertSheet(day);
+    rangeToCopy.copyTo(sheet.getRange(1, 1));
+});
+
+

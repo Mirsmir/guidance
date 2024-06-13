@@ -61,4 +61,8 @@ just have a few things left to do:
   - gotta figure out how to make a new day 
   - gotta do random numbers (god i will cry)
   - gotta do (i frogot what i was going to type)
+
+  wait, this is amazing, stuff works
+
+  apperently, when app scipt returns a day  of the week with date() func, it numbers the day of the week with 0 for sunday, 1 for monday, and so on
   
