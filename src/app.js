@@ -14,7 +14,6 @@ var thurCount = 7;
 var friCount = 7;
 
 function submit() {
-
     var timestamps = [];
     var days = [];
     var emails = [];
@@ -67,7 +66,7 @@ function findTeacher(timestamp, email, teacher, period, reason) {
             findPeriod(teach2, period[0], values);
             break;
         case "Ms. Avery":
-            Logger.log(timestamp[0], email[0], period[0], reason[0])
+            Logger.log(timestamp[0], email[0], period[0], reason[0]);
             findPeriod(teach1, period[0], values);
             break;
     }
@@ -79,26 +78,28 @@ function findTeacher(timestamp, email, teacher, period, reason) {
 function findPeriod(ssx, p, values) {
     switch (p) {
         case "P1":
-            Logger.log(findDayOfWeek(values));
-            if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).success)
-                addRecord(ssx, readCells(ssx, 'B3:B9', 3).num, 2, values);
+            Logger.log(findDayOfWeek(values) + " day of the week in the findPeriod function");
+            if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).success) {
+                Logger.log("found it here");
+                addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values)).num, 2, values);
+            }
             break;
         case "P2":
             if (readCells(ssx, 'B12:B18', 12).success)
-                addRecord(ssx, 12, 2, values);
+                addRecord(ssx, readCells(ssx, 'B12:B18', 3, findDayOfWeek(values)).num, 2, values);
             break;
         case "P3":
             if (readCells(ssx, 'B21:B27', 21).success)
-                addRecord(ssx, 21, 2, values);
+                addRecord(ssx, readCells(ssx, 'B21:B27', 3, findDayOfWeek(values)).num, 2, values);
             break;
         case "P4":
             if (readCells(ssx, 'B30:B36', 30).success)
-                addRecord(ssx, 30, 2, values)
+                addRecord(ssx, readCells(ssx, 'B30:B36', 3, findDayOfWeek(values)).num, 2, values)
             else
                 break;
         case "P5":
             if (readCells(ssx, 'B39:B45', 39).success)
-                addRecord(ssx, 39, 2, values);
+                addRecord(ssx, readCells(ssx, 'B39:B45', 3, findDayOfWeek(values)).num, 2, values);
             break;
         default:
             Logger.log("Could not access specified period");
@@ -109,22 +110,25 @@ function findDayOfWeek(values) {
     var dayOfWeek = values[0][0].getDay();
     Logger.log(dayOfWeek + " day of wwek?");
     switch (parseInt(dayOfWeek)) {
-        case 1:
-            return "Monday";
-        case 2:
+        //these are all moved up by 1 value, to ensure that students do not get appoitned on a date earlier than their submission.
+        case 0: //meaning, they submitted the form on Sunday
+            return "Monday"
+        case 1: //submitted on monday, etc...
             return "Tuesday";
-        case 3:
+        case 2:
             return "Wednesday";
-        case 4:
+        case 3:
             return "Thursday";
-        case 5:
+        case 4:
             return "Friday";
+        case 5: //submitted sunday, moved to monday
+            return "Monday";
     }
 }
 
 function readCells(ssx, range, num, weekDay) {
-
-    var data = ssx.getSheetByName(String(weekDay)).getRange(range);
+    Logger.log(weekDay);
+    var data = ssx.getSheetByName(weekDay).getRange(range);
     var values = data.getValues();
 
     for (var i = 0; i < values.length; i++) {
@@ -154,21 +158,21 @@ function addRecord(ssx, row, column, values) {
 function createSheets(ssx) {
     var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
+
+    // deletion process, if same name found, delete it.
+    weekdays.forEach(function (day) { //beautiful for each
+        var s = ssx.getSheetByName(day);
+        if (s) {
+            ssx.deleteSheet(s); //if it finds the same name
+        }
+    });
+
+    //now that its ensured that the previous ones are gone, make a new batch
+
+    const rangeToCopy = ssx.getSheetByName("Template").getDataRange();
+    weekdays.forEach(function (day) {
+        const sheet = ssx.insertSheet(day);
+        rangeToCopy.copyTo(sheet.getRange(1, 1));
+    });
+
 }
-// deletion process, if same name found, delete it.
-weekdays.forEach(function (day) { //beautiful for each
-    var s = ssx.getSheetByName(day);
-    if (s) {
-        ssx.deleteSheet(s); //if it finds the same name
-    }
-});
-
-//now that its ensured that the previous ones are gone, make a new batch
-
-const rangeToCopy = ssx.getSheetByName("Template").getDataRange();
-weekdays.forEach(function (day) {
-    const sheet = ssx.insertSheet(day);
-    rangeToCopy.copyTo(sheet.getRange(1, 1));
-});
-
-
