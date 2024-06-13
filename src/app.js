@@ -32,7 +32,7 @@ function submit() {
     days.push(sheet.getRange(2, 6, sheet.getLastRow() - 1, 1).getValues()); //okay so it starts at the 2nd row, then goes all the way down to the 
 
     Logger.log(lastRow + " fetched"); //just checking it work
-    Logger.log(teachers);
+    Logger.log(periods);
     findTeacher(timestamps[0][lastRow], emails[0][lastRow], teachers[0][lastRow], periods[0][lastRow], reasons[0][lastRow]);
 }
 
@@ -44,6 +44,7 @@ function findTeacher(timestamp, email, teacher, period, reason) {
     const teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
     const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
 
+
     Logger.log(teacher + " are u there?????")
     var values = [[timestamp[0], email[0], reason[0]]] //google app script requires you to pass values into sheets with a 2D array, rows and cols, even if youre just using one row
 
@@ -51,13 +52,15 @@ function findTeacher(timestamp, email, teacher, period, reason) {
 
         case "Ms. Kim":
             //we have to find an empty slot
+            Logger.log(period + "wwjjwj");
+            Logger.log(period[0] + "so why did this work");
             findPeriod(teach3, period[0], values);
             break;
         case "Ms. Dacey":
             findPeriod(teach2, period[0], values);
             break;
         case "Ms. Avery":
-            Logger.log(timestamp[0], email[0], period[0], reason[0]);
+            Logger.log(timestamp, email, period, reason);
             findPeriod(teach1, period[0], values);
             break;
     }
@@ -67,6 +70,7 @@ function findTeacher(timestamp, email, teacher, period, reason) {
 
 
 function findPeriod(ssx, p, values) {
+    Logger.log(p);
     switch (p) {
         case "P1":
             Logger.log(findDayOfWeek(values) + " day of the week in the findPeriod function");
@@ -80,19 +84,20 @@ function findPeriod(ssx, p, values) {
             break;
         case "P2":
             if (readCells(ssx, 'B12:B18', 12, findDayOfWeek(values)).success)
-                addRecord(ssx, readCells(ssx, 'B12:B18', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
+                addRecord(ssx, readCells(ssx, 'B12:B18', 12, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
             break;
         case "P3":
+            Logger.log("are you here RIGHT NOW ARE YOU HERE");
             if (readCells(ssx, 'B21:B27', 21, findDayOfWeek(values)).success)
-                addRecord(ssx, readCells(ssx, 'B21:B27', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
+                addRecord(ssx, readCells(ssx, 'B21:B27', 21, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
             break;
         case "P4":
             if (readCells(ssx, 'B30:B36', 30, findDayOfWeek(values)).success)
-                addRecord(ssx, readCells(ssx, 'B30:B36', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
+                addRecord(ssx, readCells(ssx, 'B30:B36', 30, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
             break;
         case "P5":
             if (readCells(ssx, 'B39:B45', 39, findDayOfWeek(values)).success)
-                addRecord(ssx, readCells(ssx, 'B39:B45', 3, findDayOfWeek(values)).num, 2, values, findDayOfWeek(values));
+                addRecord(ssx, readCells(ssx, 'B39:B45', 39, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
             break;
         default:
             Logger.log("Could not access specified period");
@@ -129,15 +134,16 @@ function readCells(ssx, range, num, weekDay) {
         var cellAddress = "B" + (i + num);
         if (cellValue === "" || cellValue === null) {
             Logger.log(cellAddress + " is empty.");
+            Logger.log(num + " number");
             return {
-                num: (i + num), success: true
+                val: (i + num), success: true
             };
         } else {
             Logger.log(cellAddress + " contains a value: " + cellValue);
         }
     }
     Logger.log("All cells are full, I must move to the 2nd next day.")
-    return { num: null, success: false };
+    return { val: null, success: false };
 }
 
 function addRecord(ssx, row, column, values, dayOfWeek) {
@@ -164,7 +170,7 @@ function autoEmail(email) {
 function createSheets(ssx) {
     var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-
+    Logger.log("Deleting and replacing");
     // deletion process, if same name found, delete it.
     weekdays.forEach(function (day) { //beautiful for each
         var s = ssx.getSheetByName(day);
@@ -177,8 +183,14 @@ function createSheets(ssx) {
 
     const rangeToCopy = ssx.getSheetByName("Template").getDataRange();
     weekdays.forEach(function (day) {
-        const sheet = ssx.insertSheet(day);
-        rangeToCopy.copyTo(sheet.getRange(1, 1));
+        const newSheet = ssx.insertSheet(day);
+        Logger.log("It should have made a new one by now");
+        rangeToCopy.copyTo(newSheet.getRange(1, 1));
     });
+
+}
+
+
+function confirmCheck(ss) {
 
 }
