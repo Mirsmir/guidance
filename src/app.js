@@ -1,11 +1,14 @@
-// var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit#gid=0');
-//awhjbawbhdhbawbhahjwdbhjabhjdawdhj
+/*A program that manages input and output from google's apps (forms, spreadsheets). An algorithm distributes different inputs by different timeslots, and properly formats the output. 
+*/
 const ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
 const MailApp = GmailApp;
 // const sheetName = Utilities.formatperiod(day, Session.getScriptTimeZone(), "MM/dd/yyyy");
-
+const teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1qr3CVw9SAR-xFSaGGi9gpSXyujdP9pb3wbyHGdF89DE/edit?gid=0#gid=0'); //avery
+const teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
+const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
 
 function submit() {
+    checkRun();
     var timestamps = [];
     var days = [];
     var emails = [];
@@ -29,7 +32,7 @@ function submit() {
     reasons.push(sheet.getRange(2, 4, sheet.getLastRow() - 1, 1).getValues());
     periods.push(sheet.getRange(2, 3, sheet.getLastRow() - 1, 1).getValues());
     teachers.push(sheet.getRange(2, 5, sheet.getLastRow() - 1, 1).getValues());
-    days.push(sheet.getRange(2, 6, sheet.getLastRow() - 1, 1).getValues()); //okay so it starts at the 2nd row, then goes all the way down to the 
+    // days.push(sheet.getRange(2, 6, sheet.getLastRow() - 1, 1).getValues()); //okay so it starts at the 2nd row, then goes all the way down to the 
 
     Logger.log(lastRow + " fetched"); //just checking it work
     Logger.log(periods);
@@ -40,9 +43,6 @@ function submit() {
 function findTeacher(timestamp, email, teacher, period, reason) {
     Logger.log("hreer");
 
-    const teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1qr3CVw9SAR-xFSaGGi9gpSXyujdP9pb3wbyHGdF89DE/edit?gid=0#gid=0'); //avery
-    const teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
-    const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
 
 
     Logger.log(teacher + " are u there?????")
@@ -143,6 +143,8 @@ function findDayOfWeek(values) {
     }
 }
 
+
+
 function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search through it again, until we've checked all days until the end.
     switch (weekDay) {
         case "Monday": //they searched for monday, and it was unavailable, meaning they have to search for 4 more days
@@ -163,7 +165,6 @@ function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search th
                 else {
                     autoEmail(values[0][1], "Appointment Unavailability", "Please submit another request startin the following week");
                 }
-
             }
             break;
         case "Wednesday":
@@ -240,6 +241,12 @@ function autoEmail(email, subject, body) {
     }
 }
 
+
+function runAdd() {
+    createSheets(teach1);
+    createSheets(teach2);
+    createSheets(teach3);
+}
 //automatic creating and deletion of week day sheets:
 function createSheets(ssx) {
     var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -264,7 +271,38 @@ function createSheets(ssx) {
 
 }
 
+function checkRun() {
+    confirmCheck(teach1,);
+    confirmCheck(teach1, 12);
+    confirmCheck(teach1, 21);
+    confirmCheck(teach1, 30);
+    confirmCheck(teach1, 39);
+    confirmCheck(teach2, 3);
+    confirmCheck(teach2, 12);
+    confirmCheck(teach2, 21);
+    confirmCheck(teach2, 30);
+    confirmCheck(teach2, 39);
+    confirmCheck(teach3, 3);
+    confirmCheck(teach3, 12);
+    confirmCheck(teach3, 21);
+    confirmCheck(teach3, 30);
+    confirmCheck(teach3, 39);
+}
 
-function confirmCheck(ss) {
+function confirmCheck(ssx, range) { //because I dont have the program working across multiple days, I unfortunately won't need to inform the user of their day of week
+    var emails = ssx.getActiveSheet().getRange(range).getValues();
+    var times = ssx.getActiveSheet().getRange(range).getValues();
+    var checks = ssx.getActiveSheet().getRange(range).getValues();
+    Logger.log(checks);
+    for (var i = 0; i < 7; i++) {
+        Logger.log(i);
+        Logger.log(emails[0][i] + 'email');
+        Logger.log(checks[0][i] + " hi");
+        if (checks[0][i]) {
+            autoEmail(emails[0][i], "Confirmed", "Your time is at: " + times[0][i]);
+        }
+    }
+
+
 
 }
