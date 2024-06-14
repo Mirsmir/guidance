@@ -8,8 +8,6 @@ Students will have the following options:
     - time they need
 
     
-
-We're going to use APPS Script, basically google js 
 -use BABEL to write js and transpile it into google apps script (cos it literally is missing so many features)
 -push js to apps script project with CLASP 
 
@@ -17,11 +15,7 @@ use Apps Script API to allow clasp tool to interact with project  code
 
 - store student data in the following: 
   google sheet requestForm
-    - name: (String)
-    - studNum: (int)
-    - time: (int) ie 11.5, or 1.25
-    - date: (String or int) ie. 11.5 (november 5th) or just November 5th (idk which is easier in this inplementation)
-    
+   
 HOLY CRAP, CLASP IS SO COOL, IVE NEVER USED IT BUT ITS SO COOL HOW IT WORKS WOAHHHH
 im so sad coding club is almost over, it was such a fun time
 i want to see the gr 12s again 
@@ -38,7 +32,6 @@ clasp push
 clasp pull
 clasp -w (watch) going to run and then push everytime I save (ITS REALLY COOL)
 
-git push origin main
 
 /////
 

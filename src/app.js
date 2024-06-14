@@ -1,4 +1,5 @@
 /*A program that manages input and output from google's apps (forms, spreadsheets). An algorithm distributes different inputs by different timeslots, and properly formats the output. 
+
 */
 const ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
 const MailApp = GmailApp;
