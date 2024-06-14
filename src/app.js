@@ -1,4 +1,9 @@
-/*A program that manages input and output from google's apps (forms, spreadsheets). An algorithm distributes different inputs by different timeslots, and properly formats the output. 
+/*A program that manages input and output from google's apps (forms, spreadsheets). 
+An algorithm distributes different inputs by different timeslots, and properly formats the output. 
+It manages automatic emails for reminders and updates.
+@date 11 June 2024
+@author Rachel Smirnov
+@version 1.0
 
 */
 const ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
@@ -8,10 +13,15 @@ const teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/
 const teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
 const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
 
+
+/*
+Method is called on submission trigger of the google form app. Manages creation and reading of results file.
+@params: n/a
+@pre: n/a
+@post: 4 arrays with corresponding values from the google form. 
+*/
 function submit() {
-    checkRun();
     var timestamps = [];
-    var days = [];
     var emails = [];
     var reasons = [];
     var periods = [];
@@ -77,11 +87,13 @@ function findPeriod(ssx, p, values) {
             Logger.log(findDayOfWeek(values[0][0]) + " day of the week in the findPeriod function");
             if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values[0][0])).success) { //wanna check availabiloty of the period in that specific day
                 Logger.log("found it here");
-                addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values[0][0])).num, 2, values, findDayOfWeek(values[0][0]));
+                // addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values[0][0])).num, 2, values, findDayOfWeek(values[0][0]));
             }
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
                 Logger.log("unavailable.");
-                repeatSearch(findDayOfWeek(values[0][0]), 'B3:B9', ssx, 3, values);
+                // repeatSearch(findDayOfWeek(values[0][0]), 'B3:B9', ssx, 3, values);
+                autoEmail(values[0][1], "Guidance Appointment Unavailable", "Please resumbit the form on sunday, or anytimes during the next week before friday")
+
             }
             break;
         case "P2":
@@ -89,7 +101,8 @@ function findPeriod(ssx, p, values) {
                 addRecord(ssx, readCells(ssx, 'B12:B18', 12, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
                 Logger.log("unavailable.");
-                repeatSearch(findDayOfWeek(values[0][0]), 'B12:B18', ssx, 12, values);
+                // repeatSearch(findDayOfWeek(values[0][0]), 'B12:B18', ssx, 12, values);
+                autoEmail(values[0][1], "Guidance Appointment Unavailable", "Please resumbit the form on sunday, or anytimes during the next week before friday")
             }
             break;
         case "P3":
@@ -98,7 +111,8 @@ function findPeriod(ssx, p, values) {
                 addRecord(ssx, readCells(ssx, 'B21:B27', 21, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
                 Logger.log("unavailable.");
-                repeatSearch(findDayOfWeek(values[0][0]), 'B21:B27', ssx, 21, values);
+                autoEmail(values[0][1], "Guidance Appointment Unavailable", "Please resumbit the form on sunday, or anytimes during the next week before friday")
+                // repeatSearch(findDayOfWeek(values[0][0]), 'B21:B27', ssx, 21, values);
             }
             break;
         case "P4":
@@ -106,7 +120,9 @@ function findPeriod(ssx, p, values) {
                 addRecord(ssx, readCells(ssx, 'B30:B36', 30, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
                 Logger.log("unavailable.");
-                repeatSearch(findDayOfWeek(values[0][0]), 'B30:B36', ssx, 30, values);
+                autoEmail(values[0][1], "Guidance Appointment Unavailable", "Please resumbit the form on sunday, or anytimes during the next week before friday")
+
+                // repeatSearch(findDayOfWeek(values[0][0]), 'B30:B36', ssx, 30, values);
             }
             break;
         case "P5":
@@ -114,7 +130,9 @@ function findPeriod(ssx, p, values) {
                 addRecord(ssx, readCells(ssx, 'B39:B45', 39, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
                 Logger.log("unavailable.");
-                repeatSearch(findDayOfWeek(values[0][0]), 'B39:B45', ssx, 39, values);
+                autoEmail(values[0][1], "Guidance Appointment Unavailable", "Please resumbit the form on sunday, or anytimes during the next week before friday")
+
+                // repeatSearch(findDayOfWeek(values[0][0]), 'B39:B45', ssx, 39, values);
             }
             break;
         default:
@@ -137,10 +155,10 @@ function findDayOfWeek(values) {
             return "Thursday";
         case 4:
             return "Friday";
-        case 5: //submitted friday, moved to monday
-            return "Monday";
+        case 5: //submitted friday, moved to next week
+            return " ";
         case 6:
-            return "Monday";
+            return " "; //submitted saturday, moved to next week
     }
 }
 
@@ -203,25 +221,32 @@ function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search th
 
 function readCells(ssx, range, num, weekDay) {
     Logger.log(weekDay);
-    var data = ssx.getSheetByName(weekDay).getRange(range);
-    var values = data.getValues();
 
-    for (var i = 0; i < values.length; i++) {
-        var cellValue = values[i][0];
-        var cellAddress = "B" + (i + num);
-        if (cellValue === "" || cellValue === null) {
-            Logger.log(cellAddress + " is empty.");
-            Logger.log(num + " number");
-            return {
-                val: (i + num), success: true
-            };
-        } else {
-            Logger.log(cellAddress + " contains a value: " + cellValue);
+    try { //because if submitted on friday, it wont be avialble till the next week
+        var data = ssx.getSheetByName(weekDay).getRange(range);
+        var values = data.getValues();
+
+        for (var i = 0; i < values.length; i++) {
+            var cellValue = values[i][0];
+            var cellAddress = "B" + (i + num);
+            if (cellValue === "" || cellValue === null) {
+                Logger.log(cellAddress + " is empty.");
+                Logger.log(num + " number");
+                return {
+                    val: (i + num), success: true
+                };
+            } else {
+                Logger.log(cellAddress + " contains a value: " + cellValue);
+            }
         }
-    }
-    Logger.log("All cells are full, I must move to the 2nd next day.")
+        Logger.log("All cells are full, I must move to the 2nd next day.")
+        return { val: null, success: false };
+    } catch (e) {
+        Logger.log("no such day. " + e.message);
+        return { val: null, success: false };
 
-    return { val: null, success: false };
+
+    }
 }
 
 function addRecord(ssx, row, column, values, dayOfWeek) {
@@ -272,8 +297,10 @@ function createSheets(ssx) {
 
 }
 
+
+//ew this is so bad I hate it i hate it i hate it i hate it i hate it i hate it 
 function checkRun() {
-    confirmCheck(teach1,);
+    confirmCheck(teach1, 3);
     confirmCheck(teach1, 12);
     confirmCheck(teach1, 21);
     confirmCheck(teach1, 30);
