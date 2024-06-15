@@ -18,7 +18,7 @@ const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/
 Method is called on submission trigger of the google form app. Manages creation and reading of results file.
 @params: n/a
 @pre: n/a
-@post: 4 arrays with corresponding values from the google form. 
+@post: 4 arrays with corresponding values from the google form, runs the findteacher function that triggers the distribution 
 */
 function submit() {
     var timestamps = [];
@@ -50,14 +50,19 @@ function submit() {
     findTeacher(timestamps[0][lastRow], emails[0][lastRow], teachers[0][lastRow], periods[0][lastRow], reasons[0][lastRow]);
 }
 
-
+/*
+Finds correpsonding teacher, triggers findperiod
+@params: arrays from submit function
+@pre: must have arrays with all vals
+@post: call findPeriod function
+*/
 function findTeacher(timestamp, email, teacher, period, reason) {
     Logger.log("hreer");
 
 
 
     Logger.log(teacher + " are u there?????")
-    var values = [[timestamp[0], email[0], reason[0]]] //google app script requires you to pass values into sheets with a 2D array, rows and cols, even if youre just using one row
+    var values = [[timestamp[0], email[0], reason[0], period[0]]] //google app script requires you to pass values into sheets with a 2D array, rows and cols, even if youre just using one row
 
     switch (String(teacher)) {
 
@@ -65,29 +70,35 @@ function findTeacher(timestamp, email, teacher, period, reason) {
             //we have to find an empty slot
             Logger.log(period + "wwjjwj");
             Logger.log(period[0] + "so why did this work");
-            findPeriod(teach3, period[0], values);
+            findPeriod(teach3, values);
             break;
         case "Ms. Dacey":
-            findPeriod(teach2, period[0], values);
+            findPeriod(teach2, values);
             break;
         case "Ms. Avery":
             Logger.log(timestamp, email, period, reason);
-            findPeriod(teach1, period[0], values);
+            findPeriod(teach1, values);
             break;
     }
 
 
 }
 
-
-function findPeriod(ssx, p, values) {
-    Logger.log(p);
-    switch (p) {
+/*
+finds the period that the student requested, read the cells and calls reading for available cell.
+@params: sheet to search,  values
+@pre: n/a
+@post: will run the add record function if applicable, otherwise will autimatically email of the unavailability during that week
+@placeholder in future versions, unavailibility will ty to get resolved with repeated searches through the remaining days of the week.
+*/
+function findPeriod(ssx, values) {
+    Logger.log(values[0][3]);
+    switch (values[0][3]) {
         case "P1":
             Logger.log(findDayOfWeek(values[0][0]) + " day of the week in the findPeriod function");
             if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values[0][0])).success) { //wanna check availabiloty of the period in that specific day
                 Logger.log("found it here");
-                // addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values[0][0])).num, 2, values, findDayOfWeek(values[0][0]));
+                addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values[0][0])).num, 2, values, findDayOfWeek(values[0][0]));
             }
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
                 Logger.log("unavailable.");
@@ -139,6 +150,12 @@ function findPeriod(ssx, p, values) {
             Logger.log("Could not access specified period");
     }
 }
+/*
+Matches the timstamp day id with corresponding day
+@params: values
+@pre: must have a timestamp in values
+@post: will return the week day name
+*/
 
 function findDayOfWeek(values) {
     var dayOfWeek = values.getDay();
@@ -162,7 +179,12 @@ function findDayOfWeek(values) {
     }
 }
 
-
+/*
+Will search through remaining days of the week to find extra availability
+@params: day of submission, data range (period)/row, spreadsheet,values
+@pre: must searchh from a specific reference point (weekday)
+@post: will find the next available time slot, or return unavaiilbility message
+*/
 
 function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search through it again, until we've checked all days until the end.
     switch (weekDay) {
@@ -218,7 +240,12 @@ function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search th
     }
 
 }
-
+/*
+finds empty cells and returns if there is a space for append or not to higher functions
+@params: spreashseet id, range (period), starting row (for convenience), weekday
+@pre: sufficient range present in spreasheet, correct names/ids
+@post: will return slot with  available space
+*/
 function readCells(ssx, range, num, weekDay) {
     Logger.log(weekDay);
 
@@ -248,13 +275,23 @@ function readCells(ssx, range, num, weekDay) {
 
     }
 }
-
+/*
+appends requests to available and requested slots
+@params: spreadhseet id, starting row, starting column, values, week day
+@pre: must have sufficient space in spreasheet, correct names/ids
+@post: will write a record to the spreadsheet.
+*/
 function addRecord(ssx, row, column, values, dayOfWeek) {
     let sheet = ssx.getSheetByName(dayOfWeek);
     sheet.getRange(row, column, values.length, values[0].length).setValues(values);
     autoEmail(values[0][1], 'Guidance Appointment Confirmation', 'Your request has been logged in our waitlist. Please await a confirmation email within the following day.');
 }
-
+/*
+sned automatic emails
+@params: recipient email, subject, body
+@pre: msut recieve correct args when called
+@post: will send email
+*/
 function autoEmail(email, subject, body) {
     Logger.log(email);
     try {
@@ -267,13 +304,24 @@ function autoEmail(email, subject, body) {
     }
 }
 
-
+/*
+runs create sheet on a timely basis for each seperate sheet
+@params: n/a
+@pre: n/a
+@post: runs create sheet 
+*/
 function runAdd() {
     createSheets(teach1);
     createSheets(teach2);
     createSheets(teach3);
 }
 //automatic creating and deletion of week day sheets:
+/*
+@post: Creates a set of days for the next week, with corresponding names 
+@params: spreadsheet id
+@pre: n/a
+@post: create new sheet with week names
+*/
 function createSheets(ssx) {
     var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
@@ -297,7 +345,12 @@ function createSheets(ssx) {
 
 }
 
-
+/*
+runs confirm check on a timely basis for each seperate sheet
+@params: n/a
+@pre: n/a
+@post: runs confirm check
+*/
 //ew this is so bad I hate it i hate it i hate it i hate it i hate it i hate it 
 function checkRun() {
     confirmCheck(teach1, 3);
@@ -316,7 +369,12 @@ function checkRun() {
     confirmCheck(teach3, 30);
     confirmCheck(teach3, 39);
 }
-
+/*
+checks the value of checkbox at specific range, if selected, runs autoEmail
+@params: spreasheet id, range of data to check
+@pre: n/a
+@post: confirmation email is sent
+*/
 function confirmCheck(ssx, range) { //because I dont have the program working across multiple days, I unfortunately won't need to inform the user of their day of week
     var emails = ssx.getActiveSheet().getRange(range).getValues();
     var times = ssx.getActiveSheet().getRange(range).getValues();
