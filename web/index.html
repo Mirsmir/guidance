@@ -3,151 +3,150 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name = "viewport" content="width=device-width, initial-scale=1.0"
-    <title> Guidance Apppointment Booking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guidance Appointment Booking</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<link rel= "stylesheet" href=""styles.css">
-
-<!from google fonts, imported embeded code -->
-
-<title>Guidance Apppointment Booking</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-           /* @media screen and (min-width: 100000px) {*/
-                body{
-                    background-image: url();
-                    background-color:rgb(34, 34, 34);
-                    font-family:'Poppins',sans-serif, Garamond, Georgia, Times, serif;
-                    margin: 0;
-                    padding: 0;    
-                    color:rgb(243, 249, 255)
-                }
-                div{
-                    margin-left: 475px;
-                    max-width:fit-content;
-                    margin-right:auto;  
-                    position:fixed;
-                    /* h1{
-                        color:aliceblue;
-                        background-color: azure;
-                        font-size:larger;
-                        padding:25px;
-                        border-radius: 20px;
-                        z-index:10; 
-                        /*have to find out wtf z index is again, but also h1 should be be a bit diff
-                        */
-                        
-                    }
-                    /*i wonder if this overrides the div??? because its kind of like a child of div, so these atributes are added on top of it */
-                /* boxweee{
-                width:200px;
-                height:50px;
-                background-color: rgb(183, 206, 213);
-                border:2px solid white;
-                margin: 20px auto;
-                display: block;
-                padding:25px;
-                border-radius: 20px;
-                position:fixed;
-                
-                } */
-                   .content {
-                    padding-top: 100px; /* To prevent overlapping with the fixed header */
-                    text-align: center;
-                }
-        
-                .box {
-                    width: 300px;
-                    height: 150px;
-                    background-color: rgb(177, 183, 184);
-                    border: 2px solid white;
-                    border-radius: 20px;
-                    margin: 20px auto;
-                    display: flex;
-                    justify-content: right;
-                    align-items: center;
-                    font-size: 1.2rem;
-                    font-weight: 600;
-                    color: rgb(34, 34, 34);
-                    position:relative;
-                }
-        
-                /* Button Style */
-                .button {
-                    display: inline-block;
-                    padding: 10px 20px;
-                    margin-top: 20px;
-                    background-color: rgb(0, 150, 136);
-                    color: white;
-                    font-size: 1rem;
-                    font-weight: 600;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    text-decoration: none;
-                    transition: background-color 0.3s ease;
-                }
-        
-                .button:hover {
-                    background-color: rgb(0, 123, 111);
-                }
+        body {
+            background-color: rgb(34, 34, 34);
+            font-family: 'Poppins', sans-serif, Garamond, Georgia, Times, serif;
+            margin: 0;
+            padding: 0;
+            color: rgb(243, 249, 255);
+        }
 
-                header{
-                    width: 100%;
-                    background-color: rgb(183, 206, 213);
-                    color: rgb(34, 34, 34);
-                    text-align: center;
-                    padding: 20px 0;
-                    font-size: 1.5rem;
-                    font-weight: 600;
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    z-index: 1000;
-                    border-bottom: 2px solid white;
-                }
-                pending{
-                    width: 75%;
-                    height:90%;
-                    align-self: center;
-                    background-color: rgb(63, 68, 72);
+        header {
+            width: 100%;
+            background-color: rgb(180, 96, 22);
+            color: rgb(34, 34, 34);
+            text-align: center;
+            padding: 20px 0;
+            font-size: 2rem;
+            font-weight: 600;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgb(78, 41, 41);
+        }
 
-                }
-                
-            /*}*/
-    </style>
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-top: 80px; /* To prevent overlap with the header */
+            height: calc(100vh - 80px); /* Full viewport height minus the header */
+        }
 
-    <script>
-        function book() {
+        .pending {
+            width: 40%;
+            margin-top: 2%;
+            margin-bottom: 1%;
+            margin-left: 1%;
+            border-radius: 10px;
+            background-color: rgb(45, 48, 49);
+            padding: 20px;
+            overflow-y: auto;
+            box-sizing: border-box;
 
+        }
+        .pending:hover{
+            background-color:rgb(44, 44, 44) ; 
+        }
+
+        .box:hover{
+            background-color: rgb(84, 84, 198);
+        }
+
+        .right-section {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+        }
+
+        .box {
+            width: 60%;
+            height: 150px;
+            background-color: rgb(45, 48, 49);
+           /* border: 2px solid rgb(255, 255, 255);*/
+            border-radius: 20px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: rgb(255, 255, 255);
+            transition: background-color 0.3s ease;
 
         }
 
-    </script>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: rgb(212, 159, 0);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration:dotted;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: rgb(168, 0, 47);
+        }
+
+        .img{
+            width: 100%;
+            padding: 20px;
+            height: 29%;
+            border-radius: 0px;
+            background-image: url(logo.png);
+        }
+    </style>
+
+
 </head>
 
+
 <body>
-    <div>
-        <header>
-            Guidance Appointment Manager
-        </header>
-    </div>
+    <header>
+        Guidance Appointment Manager
+    </header>
 
-    <!--BREAK HERE -->
+    <div class="container">
+        <!-- Pending Box on the Left -->
+        <div class="pending">
+            <h2>Pending Appointments</h2>
+            <p>hello? YOU HAVE SO MANY APPOINTMENTS. HAS THE BOX GOTTEN ANY BIGGER WE MUST SEE LETS SEE IF IT HAS WORKED!</p>
 
-    <div class = "content"> 
-        <!-- I WILL ADD A THE CLASS LATER -->
-        <div class="box">Welcome to the Guidance Appointment Booker!</div>
-        <a href="#" class="button" onclick="book()">Book an Appointment </a>
-        <pending>
-            hello? 
-        </pending>
-        <div class="box">You can manage your appointments here.</div>
-        <a href="#" class="button">View Appointments</a>
+        </div>
 
-    </div>
-    
+        <!-- Right Section with Boxes and Buttons -->
+        <div class="right-section">
+            <image class ="img"></image>
+            <div class="box">Welcome to the Guidance Appointment Booker!</div>
+            <a href="#" class="button" onclick="book()">Book an Appointment</a>
+            <!-- <div class="box">You can manage your appointments here.</div> -->
+            <!-- <a href="#" class="button">View Appointments</a>  </div>-->
+         </div>
 
+    <script>
+        function book() {
+            window.open("https://docs.google.com/forms/d/1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU/edit")
+        }
+    </script>
 </body>
+
 </html>
