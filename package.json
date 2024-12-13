@@ -18,5 +18,8 @@
   "homepage": "https://github.com/Mirsmir/guidance#readme",
   "devDependencies": {
     "@types/google-apps-script": "^1.0.83"
+  },
+  "dependencies": {
+    "guidance": "file:"
   }
 }
