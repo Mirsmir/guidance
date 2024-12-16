@@ -42,9 +42,9 @@
 
         .pending {
             width: 40%;
-            margin-top: 2%;
-            margin-bottom: 1%;
-            margin-left: 1%;
+            margin-top: 2.5%;
+            margin-bottom: 2.5%;
+            margin-left: 2.5%;
             border-radius: 10px;
             background-color: rgb(45, 48, 49);
             padding: 20px;
@@ -71,7 +71,7 @@
         }
 
         .box {
-            width: 60%;
+            width: 100%;
             height: 150px;
             background-color: rgb(45, 48, 49);
            /* border: 2px solid rgb(255, 255, 255);*/
@@ -91,7 +91,7 @@
         .button {
             display: inline-block;
             padding: 10px 20px;
-            margin-top: 10px;
+            margin-top: 2.5px;
             background-color: rgb(212, 159, 0);
             color: white;
             font-size: 1rem;
@@ -108,12 +108,40 @@
         }
 
         .img{
-            width: 100%;
+            justify-content: center;
+            width: 90%;
             padding: 20px;
-            height: 29%;
+            height: 23%;
+            border:5px;
             border-radius: 0px;
+            border-width: 20px;
+            border-color:rgb(55, 55, 55);
             background-image: url(logo.png);
         }
+        .question{
+            width: 100%;
+            height: 150px;
+            background-color: rgb(45, 48, 49);
+           /* border: 2px solid rgb(255, 255, 255);*/
+            border-radius: 20px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: rgb(255, 255, 255);
+            transition: background-color 0.3s ease;
+            visibility: hidden;
+        }
+
+        .question:hover{
+            background-color:rgb(84, 84, 198);
+        }
+
+
+        
     </style>
 
 
@@ -140,10 +168,23 @@
             <a href="#" class="button" onclick="book()">Book an Appointment</a>
             <!-- <div class="box">You can manage your appointments here.</div> -->
             <!-- <a href="#" class="button">View Appointments</a>  </div>-->
+             <question class="question" style={{visibility:visbility.state}}>
+                <p>
+                 
+                </p>
+             </question>
+
          </div>
 
     <script>
+        function preview(){
+            this.setState({visibility:'hidden'})
+        }
+        function view(){
+            this.setState({visibility:'visible'})
+        }
         function book() {
+
             window.open("https://docs.google.com/forms/d/1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU/edit")
         }
     </script>
