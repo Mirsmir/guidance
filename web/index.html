@@ -134,6 +134,8 @@
             color: rgb(255, 255, 255);
             transition: background-color 0.3s ease;
             visibility: hidden;
+            display: none;
+
         }
 
         .question:hover{
@@ -165,10 +167,10 @@
         <div class="right-section">
             <image class ="img"></image>
             <div class="box">Welcome to the Guidance Appointment Booker!</div>
-            <a href="#" class="button" onclick="book()">Book an Appointment</a>
+            <a id="button" href="#" class="button" onclick="book()">Book an Appointment</a>
             <!-- <div class="box">You can manage your appointments here.</div> -->
             <!-- <a href="#" class="button">View Appointments</a>  </div>-->
-             <question class="question" style={{visibility:visbility.state}}>
+             <question id = "quiz" class="question">
                 <p>
                  
                 </p>
@@ -183,10 +185,20 @@
         function view(){
             this.setState({visibility:'visible'})
         }
-        function book() {
 
-            window.open("https://docs.google.com/forms/d/1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU/edit")
+        function book() {
+          //  window.open("https://docs.google.com/forms/d/1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU/edit")
         }
+
+        const button = document.getElementById("button");
+        const questionSection = document.getElementById("quiz");
+
+        button.addEventListener("click", ()=>{
+            if (section.style.display === none || section.style.display === ""){
+                section.style.display = "block" //this makes it visible
+            }
+
+        });
     </script>
 </body>
 
