@@ -110,44 +110,45 @@
         .img{
             justify-content: center;
             width: 90%;
-            padding: 20px;
-            height: 23%;
+            margin-left: 20px;
+            margin-right: 20px;
+            height: 30%;
             border:5px;
             border-radius: 0px;
             border-width: 20px;
             border-color:rgb(55, 55, 55);
             background-image: url(logo.png);
         }
+
         .question{
             width: 100%;
-            height: 150px;
+            height: auto;
             background-color: rgb(45, 48, 49);
             border-radius: 20px;
-            margin: 20px 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 600;
             color: rgb(255, 255, 255);
             visibility: hidden; /* Initially hidden */
             opacity: 0; /* Fully transparent */
             transition: visibility 0s, opacity 0.5s ease; /* Smooth transition */
-
+            box-sizing: border-box;
+            flex-direction:row;
+            align-items: flex-end;
         }
+
         .checkbox{
+            margin: 20px 0;
             border-color: rgb(0, 0, 0);
             display:block;
             position:relative;
+            justify-content: center;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            padding-left: 20px;
-            padding-right: 20px;
+            padding-left: 30px;
+            padding-right: 30px;
             margin-bottom: 12px;
-            font-size: 10px;
+            margin-top:12px;
 
         }
         .container input {
@@ -193,6 +194,49 @@
             -ms-transform: rotate(45deg);
             transform: rotate(45deg);
           }
+        .p1{
+        margin-left: 50px;
+        margin-right:50px;
+        font-size: larger;
+        }
+
+        .questionHeader {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        margin-left: 5px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        font-size: larger;
+        }
+
+
+        .question input[type="text"],
+        .question textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+
+        .submit {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 2.5px;
+            background-color: rgb(212, 159, 0);
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+   
 
 
         
@@ -208,56 +252,71 @@
     </header>
 
     <div class="container">
-        <!-- Pending Box on the Left -->
+        <!-- Pending box on the left -->
         <div class="pending">
             <h2>Pending Appointments</h2>
             <p>hello? YOU HAVE SO MANY APPOINTMENTS. HAS THE BOX GOTTEN ANY BIGGER WE MUST SEE LETS SEE IF IT HAS WORKED!</p>
-
+    
         </div>
 
         <!-- Right Section with Boxes and Buttons -->
         <div class="right-section">
+
             <image class ="img"></image>
             <div class="box">Welcome to the Guidance Appointment Booker!</div>
             <a id="button" href="#" class="button" >Book an Appointment</a>
-            <!-- <div class="box">You can manage your appointments here.</div> -->
-            <!-- <a href="#" class="button">View Appointments</a>  </div>-->
-             <question id = "quiz" class="question">
-                <label class="checkbox"> P1
-                    <input type="checkbox" checked="checked">
-                    <span class="checkmark"></span>
-                </label>
+            
+            <div id = "quiz" class="question">
+                
+            <h1 class="questionHeader"> What period are you available: </h1>
+            
+                    <label class="checkbox"> 
+                        <p1>
+                            P1
+                        </p1>
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
 
-                <label class="checkbox"> P2
-                    <input type="checkbox" checked="checked">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox"> P3
-                    <input type="checkbox" checked="checked">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox"> P4
-                    <input type="checkbox" checked="checked">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox"> P5
-                    <input type="checkbox" checked="unchecked">
-                    <span class="checkmark"></span>
-                </label>
-             </question>
+                    <label class="checkbox"> 
+                        <p1>
+                            P2
+                        </p1>
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox"> 
+                        <p1>
+                            P3
+                        </p1>
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox"> 
+                        <p1>
+                            P4
+                        </p1>
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox"> 
+                        <p1>
+                            P5
+                        </p1>
+                        <input type="checkbox" checked="unchecked">
+                        <span class="checkmark"></span>
+                    </label>
+                
+                </question>
 
          </div>
+        </div>
+    </div>
 
     <script>
-        function preview(){
-            this.setState({visibility:'hidden'})
-        }
-        function view(){
-            this.setState({visibility:'visible'})
-        }
-
+        
         function book() {
-          //  window.open("https://docs.google.com/forms/d/1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU/edit")
+          window.open("https://docs.google.com/forms/d/1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU/edit")
         }
 
         const button = document.getElementById("button");

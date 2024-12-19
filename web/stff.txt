@@ -1,0 +1,12 @@
+ <div class="container">
+                    <!-- Question 1: Written Field -->
+                    <div class="question">
+                        <h3>1. What is your name?</h3>
+                        <input type="text" placeholder="Enter your name">
+                    </div>
+            
+                    <!-- Question 2: Text Area -->
+                    <div class="question">
+                        <h3>2. Tell us about your availability:</h3>
+                        <textarea rows="4" placeholder="Write here..."></textarea>
+                    </div>
