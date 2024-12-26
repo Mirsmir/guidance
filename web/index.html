@@ -75,7 +75,7 @@
             height: 150px;
             background-color: rgb(45, 48, 49);
            /* border: 2px solid rgb(255, 255, 255);*/
-            border-radius: 20px;
+            border-radius: 10px;
             margin: 20px 0;
             display: flex;
             justify-content: center;
@@ -133,9 +133,10 @@
             transition: visibility 0s, opacity 0.5s ease; /* Smooth transition */
             box-sizing: border-box;
             flex-direction:column;
-            align-items: flex-end;
+            align-items: flex-start;
             margin-top: 20px;
             margin-left: 20px;
+            padding: 20px;
         }
 
         .checkbox{
@@ -207,7 +208,6 @@
         .questionHeader {
         max-width: 600px;
         padding: 20px;
-        margin-left: 5px;
         border-radius: 8px;
        /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);*/
         text-align: left;
@@ -222,6 +222,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
+            font-family: 'Popping', sans-serif;
         }
 
         .question {
@@ -279,7 +280,7 @@
             <div id = "quiz" class="questionBox">
                 <div class="question">
                 
-            <h1 class="questionHeader"> What period are you available: </h1>
+            <h1 class="questionHeader">1. What period are you available: </h1>
             
                     <label class="checkbox"> 
                         <p1>
@@ -320,15 +321,35 @@
                 </div>
 
                 <div class="question">
-            <h1 class="questionHeader"> What period are you available: </h1>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" name="languages" value="javascript"> JavaScript</label>
-                        <label><input type="checkbox"  name="languages" value="python"> Python</label>
-                        <label><input type="checkbox" name="languages" value="java"> Java</label>
-                        <label><input type="checkbox" name="languages" value="csharp"> C#</label>
-                    </div>
+            <h1 class="questionHeader">2. Select your guidance counsellor: </h1>
+                        <label class="checkbox"> 
+                            <p1>
+                                Ms. Kim
+                            </p1>
+                            <input type="checkbox" checked="checked">
+                            <span class="checkmark"></span>
+                        </label>
+    
+                        <label class="checkbox"> 
+                            <p1>
+                                Ms. Dacey
+                            </p1>
+                            <input type="checkbox" checked="checked">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox"> 
+                            <p1>
+                                Ms. Avery
+                            </p1>
+                            <input type="checkbox" checked="checked">
+                            <span class="checkmark"></span>
+                        </label>
                 </div>
 
+                <div class="question">
+                    <h1 class="questionHeader">3. Reason for appointment: </h1>
+                    <textarea id="question3" name="question3" rows="4" placeholder="Enter your answer here"></textarea>
+                </div>
                     
 
 
