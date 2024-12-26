@@ -125,6 +125,7 @@
             height: auto;
             background-color: rgb(45, 48, 49);
             border-radius: 20px;
+            text-align: left;
             display: flex;
             color: rgb(255, 255, 255);
             visibility: hidden; /* Initially hidden */
@@ -133,6 +134,8 @@
             box-sizing: border-box;
             flex-direction:row;
             align-items: flex-end;
+            margin-top: 20px;
+            margin-left: 20px;
         }
 
         .checkbox{
@@ -140,7 +143,7 @@
             border-color: rgb(0, 0, 0);
             display:block;
             position:relative;
-            justify-content: center;
+            justify-content:flex-start;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -157,6 +160,7 @@
             cursor: pointer;
             height: 0;
             width: 0;
+
           }
           .checkmark {
             position: absolute;
@@ -202,12 +206,10 @@
 
         .questionHeader {
         max-width: 600px;
-        margin: 20px auto;
         padding: 20px;
         margin-left: 5px;
-        background-color: white;
         border-radius: 8px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+       /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);*/
         text-align: left;
         font-size: larger;
         }
@@ -309,9 +311,51 @@
                 
                 </question>
 
+              </div>
+            </div>
          </div>
-        </div>
-    </div>
+
+                    <h2 class "questionHeader">
+                        What day are you available: 
+                    </h2>
+
+                    <label class="checkbox"> 
+                        <p1>
+                            P1
+                        </p1>
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="checkbox"> 
+                        <p1>
+                            P2
+                        </p1>
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox"> 
+                        <p1>
+                            P3
+                        </p1>
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox"> 
+                        <p1>
+                            P4
+                        </p1>
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox"> 
+                        <p1>
+                            P5
+                        </p1>
+                        <input type="checkbox" checked="unchecked">
+                        <span class="checkmark"></span>
+                    </label>
+</body>
 
     <script>
         

@@ -1,168 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name = "viewport" content="width=device-width, initial-scale=1.0"
-    <title> Guidance Apppointment Booking</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<link rel= "stylesheet" href=""styles.css">
-
-<!from google fonts, imported embeded code -->
-
-<title>Guidance Apppointment Booking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkbox Questions</title>
     <style>
-           /* @media screen and (min-width: 100000px) {*/
-                body{
-                    background-image: url();
-                    background-color:rgb(34, 34, 34);
-                    font-family:'Poppins',sans-serif, Garamond, Georgia, Times, serif;
-                    margin: 0;
-                    padding: 0;    
-                    color:rgb(243, 249, 255)
-                }
-                div{
-                    margin-left: 475px;
-                    max-width:fit-content;
-                    margin-right:auto;  
-                    position:fixed;
-                    /* h1{
-                        color:aliceblue;
-                        background-color: azure;
-                        font-size:larger;
-                        padding:25px;
-                        border-radius: 20px;
-                        z-index:10; 
-                        /*have to find out wtf z index is again, but also h1 should be be a bit diff
-                        */
-                        
-                    }
-                    /*i wonder if this overrides the div??? because its kind of like a child of div, so these atributes are added on top of it */
-                /* boxweee{
-                width:200px;
-                height:50px;
-                background-color: rgb(183, 206, 213);
-                border:2px solid white;
-                margin: 20px auto;
-                display: block;
-                padding:25px;
-                border-radius: 20px;
-                position:fixed;
-                
-                } */
-                   .content {
-                    padding-top: 100px; /* To prevent overlapping with the fixed header */
-                    text-align: center;
-                }
-        
-                .box {
-                    width: 300px;
-                    height: 150px;
-                    background-color: rgb(177, 183, 184);
-                    border: 2px solid white;
-                    border-radius: 20px;
-                    margin: 20px auto;
-                    display: flex;
-                    justify-content: right;
-                    align-items: center;
-                    font-size: 1.2rem;
-                    font-weight: 600;
-                    color: rgb(34, 34, 34);
-                    position:relative;
-                }
-        
-                /* Button Style */
-                .button {
-                    display: inline-block;
-                    padding: 10px 20px;
-                    margin-top: 20px;
-                    background-color: rgb(0, 150, 136);
-                    color: white;
-                    font-size: 1rem;
-                    font-weight: 600;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    text-decoration: none;
-                    transition: background-color 0.3s ease;
-                }
-        
-                .button:hover {
-                    background-color: rgb(0, 123, 111);
-                }
-
-                header{
-                    width: 100%;
-                    background-color: rgb(183, 206, 213);
-                    color: rgb(34, 34, 34);
-                    text-align: center;
-                    padding: 20px 0;
-                    font-size: 1.5rem;
-                    font-weight: 600;
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    z-index: 1000;
-                    border-bottom: 2px solid white;
-                    border-radius: 20px;
-                }
-                .pending{
-                    width: 75%;
-                    height:90%;
-                    align-self: center;
-                    background-color: rgb(63, 68, 72);
-
-                }
-                .container {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    margin-top: 80px; /* To prevent overlap with the header */
-                    height: calc(100vh - 80px); /* Full viewport height minus the header */
-                }
-        
-                
-            /*}*/
-    </style>
-
-    <script>
-        function book() {
-
-
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
-
-    </script>
+        .question {
+            margin-bottom: 20px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .checkbox-group {
+            margin-top: 10px;
+        }
+        .checkbox-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .submit-button {
+            margin-top: 20px;
+        }
+    </style>
 </head>
-
 <body>
-    <header>
-        Guidance Appointment Manager
-    </header>
+    <h1>Survey Questions</h1>
 
-    <div class="container">
-        <!-- Pending Box on the Left -->
-        <div class="pending">
-            <h2>Pending Appointments</h2>
-            <p>hello?</p>
-        </div>
+    <div class="question">
+        <label for="question1">1. What is your favorite color?</label>
+        <input type="text" id="question1" name="question1" placeholder="Enter your answer here">
+    </div>
 
-        <!-- Right Section with Boxes and Buttons -->
-        <div class="right-section">
-            <div class="box">Welcome to the Guidance Appointment Booker!</div>
-            <a href="#" class="button" onclick="book()">Book an Appointment</a>
-            <div class="box">You can manage your appointments here.</div>
-            <a href="#" class="button">View Appointments</a>
+    <div class="question">
+        <label for="question2">2. Select your preferred programming languages:</label>
+        <div class="checkbox-group">
+            <label><input type="checkbox" name="languages" value="javascript"> JavaScript</label>
+            <label><input type="checkbox" name="languages" value="python"> Python</label>
+            <label><input type="checkbox" name="languages" value="java"> Java</label>
+            <label><input type="checkbox" name="languages" value="csharp"> C#</label>
         </div>
     </div>
 
-    <script>
-        function book() {
-            alert("Booking functionality coming soon!");
-        }
-    </script>
+    <div class="question">
+        <label for="question3">3. Describe your favorite hobby:</label>
+        <textarea id="question3" name="question3" rows="4" placeholder="Enter your answer here"></textarea>
+    </div>
+
+    <div class="question">
+        <label for="question4">4. Choose your favorite types of food:</label>
+        <div class="checkbox-group">
+            <label><input type="checkbox" name="food" value="italian"> Italian</label>
+            <label><input type="checkbox" name="food" value="mexican"> Mexican</label>
+            <label><input type="checkbox" name="food" value="japanese"> Japanese</label>
+            <label><input type="checkbox" name="food" value="indian"> Indian</label>
+        </div>
+    </div>
+
+    <button class="submit-button">Submit</button>
 </body>
-
 </html>
-
