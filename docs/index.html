@@ -219,9 +219,11 @@
         .question textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            background-color: #0d0c0c;
+            border: 1px solid #0d0c0c;
             border-radius: 5px;
             font-size: 1rem;
+            color:white;          
             font-family: 'Popping', sans-serif;
         }
 
@@ -277,9 +279,14 @@
             <div class="box">Welcome to the Guidance Appointment Booker!</div>
             <a id="button" href="#" class="button" >Book an Appointment</a>
             
+           
+           
             <div id = "quiz" class="questionBox">
+
+               <form id="booking" method="post" action="https://script.google.com/macros/s/AKfycbzxQL30an6xIeH5bjQWLdMEF0Jd2Bl61rMZa9vV9eJKypqMCknW0DxJi3xxWh52yraRSA/exec">
                 <div class="question">
-                
+            
+                    
             <h1 class="questionHeader">1. What period are you available: </h1>
             
                     <label class="checkbox"> 
@@ -351,8 +358,9 @@
                     <textarea id="question3" name="question3" rows="4" placeholder="Enter your answer here"></textarea>
                 </div>
                     
+                <a id="button" href="#" class="submit" >Submit</a>
 
-
+                 </form>
               </div>
             </div>
          </div>
