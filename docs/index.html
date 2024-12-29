@@ -19,10 +19,10 @@
 
         header {
             width: 100%;
-            background-color: rgb(180, 96, 22);
+            background-color: rgb(122, 43, 12);
             color: rgb(34, 34, 34);
             text-align: center;
-            padding: 20px 0;
+            padding: 20px;
             font-size: 2rem;
             font-weight: 600;
             position: fixed;
@@ -250,6 +250,16 @@
             transition: background-color 0.3s ease;
         }
 
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            background-color:#252525;
+            color:white;
+        }
+    
+       .dropdown:hover{
+        background-color: #0d0c0c;
+       }
    
 
 
@@ -285,10 +295,39 @@
             <div id = "quiz" class="questionBox">
 
                <form id="booking" method="post" action="https://script.google.com/macros/s/AKfycbzxQL30an6xIeH5bjQWLdMEF0Jd2Bl61rMZa9vV9eJKypqMCknW0DxJi3xxWh52yraRSA/exec">
+               
+
+           <div class="questionHeader">1. Please select an available day: </div>   
+
+            <!-- <div class="question">
+                <div class="dropdown">
+                    <button class="dropbtn">Dropdown</button>
+                    <select>
+                    <div class="dropdown-content">
+                      <a href="#">Monday</a>
+                      <a href="#">Tuesday</a>
+                      <a href="#">Wednesday</a>
+                      <a href="#">Thursday</a>
+                      <a href="#">Friday</a>
+                    </div>
+                </select>
+                  </div> 
+            </div>    -->
+
+            <div class="question">
+                <select class="dropdown">
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                </select>
+            </div>
+
+            <hr>
                 <div class="question">
             
-                    
-            <h1 class="questionHeader">1. What period are you available: </h1>
+            <h1 class="questionHeader">2. What period are you available: </h1>
             
                     <label class="checkbox"> 
                         <p1>
@@ -331,7 +370,7 @@
                 <!-- horizontal rule??  -->
 
                 <div class="question">
-            <h1 class="questionHeader">2. Select your guidance counsellor: </h1>
+            <h1 class="questionHeader">3. Select your guidance counsellor: </h1>
                         <label class="checkbox"> 
                             <p1>
                                 Ms. Kim
@@ -358,7 +397,7 @@
                 <hr>
 
                 <div class="question">
-                    <h1 class="questionHeader">3. Reason for appointment: </h1>
+                    <h1 class="questionHeader">4. Reason for appointment: </h1>
                     <textarea id="question3" name="question3" rows="4" placeholder="Enter your answer here"></textarea>
                 </div>
                     
