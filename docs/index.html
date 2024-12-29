@@ -223,18 +223,20 @@
 
         .question input[type="text"],
         .question textarea {
-            width: 100%;
             padding: 10px;
             background-color: #0d0c0c;
             border: 1px solid #0d0c0c;
             border-radius: 5px;
             font-size: 1rem;
-            color:white;          
+            color:white;     
             font-family: 'Popping', sans-serif;
+            width: 100%; /* Expand to 100% of the parent */
+            box-sizing: border-box;
         }
 
         .question {
             margin-bottom: 20px;
+            
         }
         .question label {
             display: block;

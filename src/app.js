@@ -20,6 +20,23 @@ Method is called on submission trigger of the google form app. Manages creation 
 @pre: n/a
 @post: 4 arrays with corresponding values from the google form, runs the findteacher function that triggers the distribution 
 */
+
+function doPost(teacherNumber) {
+    // Parse incoming POST data
+    const data = JSON.parse(e.postData.contents);
+
+    // Example: Append data to a Google Sheet
+    const sheet = SpreadsheetApp.openById(teacherNumber).getActiveSheet();
+    sheet.appendRow([data.name, data.email]);
+
+    // Return a success message
+    return ContentService.createTextOutput("Data received and added to the sheet.")
+        .setMimeType(ContentService.MimeType.TEXT);
+}
+
+
+
+
 function submit() {
     var timestamps = [];
     var emails = [];
@@ -347,6 +364,7 @@ function createSheets(ssx) {
 
 /*
 runs confirm check on a timely basis for each seperate sheet
+i have no clue what I meant here by confirm.... uh OH.
 @params: n/a
 @pre: n/a
 @post: runs confirm check
