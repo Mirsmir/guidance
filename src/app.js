@@ -22,21 +22,25 @@ Method is called on submission trigger of the google form app. Manages creation 
 */
 
 function doPost(teacherNumber) {
-    // Parse incoming POST data
+    // prading the data from json
     const data = JSON.parse(e.postData.contents);
 
-    // Example: Append data to a Google Sheet
-    const sheet = SpreadsheetApp.openById(teacherNumber).getActiveSheet();
+    const sheet = SpreadsheetApp.openById(teacherNumber).getActiveSheet();    //appending to area in the sheets
+
     sheet.appendRow([data.name, data.email]);
 
-    // Return a success message
-    return ContentService.createTextOutput("Data received and added to the sheet.")
+    return ContentService.createTextOutput("Data added.") //making sure it worked
         .setMimeType(ContentService.MimeType.TEXT);
 }
 
 
 
-
+/*
+Method is called on submission trigger of the google form app. Manages creation and reading of results file.
+@params: n/a
+@pre: n/a
+@post: 4 arrays with corresponding values from the google form, runs the findteacher function that triggers the distribution 
+*/
 function submit() {
     var timestamps = [];
     var emails = [];
@@ -56,7 +60,7 @@ function submit() {
     timestamps.push(x.getValues()); //will get all objects in range from script
     Logger.log(x); //just testing
 
-    emails.push(sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).getValues());
+    emails.push(sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).getValues()); //what the hell does this
     reasons.push(sheet.getRange(2, 4, sheet.getLastRow() - 1, 1).getValues());
     periods.push(sheet.getRange(2, 3, sheet.getLastRow() - 1, 1).getValues());
     teachers.push(sheet.getRange(2, 5, sheet.getLastRow() - 1, 1).getValues());
