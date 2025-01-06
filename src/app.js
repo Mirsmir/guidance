@@ -13,6 +13,12 @@ const teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/
 const teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
 const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
 
+var timestamps = [];
+var emails = [];
+var reasons = [];
+var periods = [];
+var teachers = [];
+
 
 /*
 Method is called on submission trigger of the google form app. Manages creation and reading of results file.
@@ -23,11 +29,12 @@ Method is called on submission trigger of the google form app. Manages creation 
 
 function doPost(teacherNumber) {
     // prading the data from json
-    const data = JSON.parse(e.postData.contents);
+    // const data = JSON.parse(e.postData.contents);
 
-    const sheet = SpreadsheetApp.openById(teacherNumber).getActiveSheet();    //appending to area in the sheets
+    teacher = formData.teacher;
+    periods = formData.period;
+    reasons = form.Data.reason;
 
-    sheet.appendRow([data.name, data.email]);
 
     return ContentService.createTextOutput("Data added.") //making sure it worked
         .setMimeType(ContentService.MimeType.TEXT);
@@ -42,11 +49,6 @@ Method is called on submission trigger of the google form app. Manages creation 
 @post: 4 arrays with corresponding values from the google form, runs the findteacher function that triggers the distribution 
 */
 function submit() {
-    var timestamps = [];
-    var emails = [];
-    var reasons = [];
-    var periods = [];
-    var teachers = [];
 
     Logger.log("here");
 

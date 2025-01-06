@@ -299,6 +299,8 @@
             written.value=""
         };
 
+
+
         function getValue(){
             //array of checkbox items
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -318,19 +320,39 @@
 
         //make sure it sends the actual values of the html page
         function submitForm(){
+
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]'); //idk if getElementById("period") would work
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = false; 
+            });
+
+            const selected = document.getElementById("day");
+            selected.value="Monday";
+
+            const teach = document.getElementById("teacher");
+            teach.value="Kim";
+
+            const written = document.getElementById("question3");
+            written.value=""
+            
             const data = {
                 teacher: document.getElementById("teacher").value,
-                period: document.getElementById("period").value,
+                day: document.getElementById("day").value,
                 period: getValue().value,
                 reason:document.getElementById("question3").value
             };
 
+            console.log(teacher)
+            
+            
             google.script.run.withSuccessHandler(onSuccess).processFormData(data);
         }
 
         function onSuccess(message) {
-            //make new formm
-            document.getElementById("form").reset(); 
+            //make new formm (this didn't really work...)
+            console.log("submited???")
+            alert(message)
+            document.getElementById("quiz").reset(); 
           }
 
     </script>
@@ -476,7 +498,7 @@
                     <textarea id="question3" name="question3" rows="4" placeholder="Enter your answer here"></textarea>
                 </div>
                     
-                <a id="button" href="#" class="submit" >Submit</a>
+                <a id="button" href="#" class="submit" onclick="submitForm()">Submit</a>
 
                  </form>
               </div>
