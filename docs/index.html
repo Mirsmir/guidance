@@ -281,6 +281,60 @@
         
     </style>
 
+    <script>
+        //on reload, I want everything to reset
+        window.onload = function() { //window.onload is an event that fires whenever i reload
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]'); //idk if getElementById("period") would work
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = false; 
+            });
+
+            const selected = document.getElementById("day");
+            selected.value="Monday";
+
+            const teach = document.getElementById("teacher");
+            teach.value="Kim";
+
+            const written = document.getElementById("question3");
+            written.value=""
+        };
+
+        function getValue(){
+            //array of checkbox items
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            //do a loop that checks which one has been checked 
+            var checked = [];
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    checked.push(checkbox.value);
+                }
+                
+            });
+
+
+            return checked;
+        }
+
+        //make sure it sends the actual values of the html page
+        function submitForm(){
+            const data = {
+                teacher: document.getElementById("teacher").value,
+                period: document.getElementById("period").value,
+                period: getValue().value,
+                reason:document.getElementById("question3").value
+            };
+
+            google.script.run.withSuccessHandler(onSuccess).processFormData(data);
+        }
+
+        function onSuccess(message) {
+            //make new formm
+            document.getElementById("form").reset(); 
+          }
+
+    </script>
+
 
 </head>
 
@@ -312,7 +366,7 @@
                <form id="booking" method="post" action="https://script.google.com/macros/s/AKfycbzxQL30an6xIeH5bjQWLdMEF0Jd2Bl61rMZa9vV9eJKypqMCknW0DxJi3xxWh52yraRSA/exec">
                
 
-           <div class="questionHeader">1. Please select an available day: </div>   
+           <div class="questionHeader">1. Please select an available day: *</div>   
 
             <!-- <div class="question">
                 <div class="dropdown">
@@ -330,25 +384,25 @@
             </div>    -->
 
             <div class="question">
-                <select class="dropdown">
-                    <option>Monday</option>
-                    <option>Tuesday</option>
-                    <option>Wednesday</option>
-                    <option>Thursday</option>
-                    <option>Friday</option>
+                <select class="dropdown" id="day" required>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
                 </select>
             </div>
 
             <hr>
                 <div class="question">
             
-            <h1 class="questionHeader">2. What period are you available: </h1>
+            <h1 class="questionHeader">2. What period are you available: *</h1>
             
                     <label class="checkbox"> 
                         <p1>
                             P1
                         </p1>
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox" name="period" value="1" required>
                         <span class="checkmark"></span>
                     </label>
 
@@ -356,28 +410,28 @@
                         <p1>
                             P2
                         </p1>
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox" value="2" name="period" required>
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox"> 
                         <p1>
                             P3
                         </p1>
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox"  value="3" name="period" required>
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox"> 
                         <p1>
                             P4
                         </p1>
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox" value="4" name="period" required>
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox"> 
                         <p1>
                             P5
                         </p1>
-                        <input type="checkbox" checked="unchecked">
+                        <input type="checkbox"  value="5" name="period" required>
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -385,7 +439,7 @@
                 <!-- horizontal rule??  -->
 
                 <div class="question">
-            <h1 class="questionHeader">3. Select your guidance counsellor: </h1>
+            <h1 class="questionHeader">3. Select your guidance counsellor: *</h1>
                         <!-- <label class="checkbox"> 
                             <p1>
                                 Ms. Kim
@@ -408,17 +462,17 @@
                             <input type="checkbox" checked="checked">
                             <span class="checkmark"></span>
                         </label> -->
-                        <select class="dropdown">
-                            <option>Ms. Kim</option>
-                            <option>Ms. Dacey</option>
-                            <option>Ms. Avery</option>
+                        <select class="dropdown" id="teacher" required>
+                            <option value="Kim">Ms. Kim</option>
+                            <option value="Dacey">Ms. Dacey</option>
+                            <option value="Avery">Ms. Avery</option>
                           
                         </select>
                 </div>
                 <hr>
 
                 <div class="question">
-                    <h1 class="questionHeader">4. Reason for appointment: </h1>
+                    <h1 class="questionHeader" required >4. Reason for appointment: *</h1>
                     <textarea id="question3" name="question3" rows="4" placeholder="Enter your answer here"></textarea>
                 </div>
                     
