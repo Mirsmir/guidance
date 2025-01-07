@@ -35,6 +35,7 @@ function doPost(teacherNumber) {
     periods = formData.period;
     reasons = form.Data.reason;
 
+    //add json database 
 
     return ContentService.createTextOutput("Data added.") //making sure it worked
         .setMimeType(ContentService.MimeType.TEXT);

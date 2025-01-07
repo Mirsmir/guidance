@@ -1,1 +1,9 @@
 Using react native to make the web app plausible on mobile UI's
+
+
+speechNotes
+
+2 weeks in advance 
+auth
+dump into one db (old logs)
+coloudflare zerotrust 
