@@ -12,7 +12,7 @@ const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/
 /*
 runs create sheet on a timely basis for each seperate sheet
 @params: n/a
-@pre: n/a
+@pre: n/a hello??? 
 @post: runs create sheet 
 */
 function runAdd() {
@@ -88,6 +88,11 @@ function formatDate(date) {
 
 function yesteryear() {
 
+    if (sheets[i].getName() === yesterdayName) {
+        spreadsheet.deleteSheet(sheets[i]);
+        return;
+    }
 
+    yesteryear();
 
 }
