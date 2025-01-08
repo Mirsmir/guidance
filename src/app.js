@@ -23,11 +23,11 @@ var teachers = [];
 /*
 Method is called on submission trigger of the google form app. Manages creation and reading of results file.
 @params: n/a
-@pre: n/a
+@pre: n/aw
 @post: 4 arrays with corresponding values from the google form, runs the findteacher function that triggers the distribution 
 */
 
-function doPost(teacherNumber) {
+function doPost() {
     // prading the data from json
     // const data = JSON.parse(e.postData.contents);
 
