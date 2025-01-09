@@ -30,7 +30,7 @@ commands:
 
 clasp push
 clasp pull
-clasp -w (watch) going to run and then push everytime I save (ITS REALLY COOL)
+clasp push -w (watch) going to run and then push everytime I save (ITS REALLY COOL)
 
 
 /////
