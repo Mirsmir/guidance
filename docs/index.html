@@ -311,25 +311,11 @@
            
             <div id = "quiz" class="questionBox">
 
-               <form id="booking" method="post" action="https://script.google.com/macros/s/AKfycbzxQL30an6xIeH5bjQWLdMEF0Jd2Bl61rMZa9vV9eJKypqMCknW0DxJi3xxWh52yraRSA/exec">
-               
+               <!-- <form id="booking" method="post" action="https://script.google.com/macros/s/AKfycbzxQL30an6xIeH5bjQWLdMEF0Jd2Bl61rMZa9vV9eJKypqMCknW0DxJi3xxWh52yraRSA/exec"> -->
+            <form id="booking">
 
-           <div class="questionHeader">1. Please select an available day: *</div>   
-
-            <!-- <div class="question">
-                <div class="dropdown">
-                    <button class="dropbtn">Dropdown</button>
-                    <select>
-                    <div class="dropdown-content">
-                      <a href="#">Monday</a>
-                      <a href="#">Tuesday</a>
-                      <a href="#">Wednesday</a>
-                      <a href="#">Thursday</a>
-                      <a href="#">Friday</a>
-                    </div>
-                </select>
-                  </div> 
-            </div>    -->
+                   
+            <div class="questionHeader">1. Please select an available day: *</div>   
 
             <div class="question">
                 <select class="dropdown" id="day" required>
@@ -350,7 +336,7 @@
                         <p1>
                             P1
                         </p1>
-                        <input type="checkbox" name="period" value="1" required>
+                        <input type="checkbox" name="period" value="1" >
                         <span class="checkmark"></span>
                     </label>
 
@@ -358,28 +344,28 @@
                         <p1>
                             P2
                         </p1>
-                        <input type="checkbox" value="2" name="period" required>
+                        <input type="checkbox" value="2" name="period" >
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox"> 
                         <p1>
                             P3
                         </p1>
-                        <input type="checkbox"  value="3" name="period" required>
+                        <input type="checkbox"  value="3" name="period" >
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox"> 
                         <p1>
                             P4
                         </p1>
-                        <input type="checkbox" value="4" name="period" required>
+                        <input type="checkbox" value="4" name="period" >
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox"> 
                         <p1>
                             P5
                         </p1>
-                        <input type="checkbox"  value="5" name="period" required>
+                        <input type="checkbox"  value="5" name="period" >
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -388,28 +374,7 @@
 
                 <div class="question">
             <h1 class="questionHeader">3. Select your guidance counsellor: *</h1>
-                        <!-- <label class="checkbox"> 
-                            <p1>
-                                Ms. Kim
-                            </p1>
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-    
-                        <label class="checkbox"> 
-                            <p1>
-                                Ms. Dacey
-                            </p1>
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="checkbox"> 
-                            <p1>
-                                Ms. Avery
-                            </p1>
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label> -->
+                      
                         <select class="dropdown" id="teacher" required>
                             <option value="Kim">Ms. Kim</option>
                             <option value="Dacey">Ms. Dacey</option>
@@ -428,150 +393,21 @@
 
                  <div class="question"> 
                     <h1 class="questionHeader" required >4. Student Number: *</h1>
-                    <textarea id="question3" name="question3" rows="4" placeholder="Enter number here"></textarea>
+                    <textarea id="number" name="question3" rows="4" placeholder="Enter number here"></textarea>
                 </div> 
 
 
                     
-                <a id="button" href="#" class="submit" onclick="submitForm()">Submit</a>
+                <button id="button"  class="submit" type="submit" >Submit</button>
 
-                 </form>
-              </div>
-            </div>
-         </div>
+            </form>
+        </div>
+    </div>
+    </div>
 
                   
 </body>
-
-    <script>
-        
-       function book() {
-          window.open("https://docs.google.com/forms/d/1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU/edit")
-        }
-
-        const button = document.getElementById("button");
-        const questionSection = document.getElementById("quiz");
-
-        button.addEventListener("click", ()=>{
-            if (questionSection.style.visibility === "hidden" || questionSection.style.visibility === ""){
-                questionSection.style.visibility = "visible" //this makes it visible
-                questionSection.style.opacity = "1";
-            }
-
-        }); 
-    
-
-
-        document.getElementById('myForm').addEventListener('submit', async function(event) {
-            event.preventDefault(); //prevents default submissions for html??? 
-          
-            const form = event.target;
-            const formData = new FormData(form);
-            const jsonData = Object.fromEntries(formData.entries()); //  to JSON 
-          
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzxQL30an6xIeH5bjQWLdMEF0Jd2Bl61rMZa9vV9eJKypqMCknW0DxJi3xxWh52yraRSA/exec';//json data to ap script endpoint
-            console.log
-          
-            try {
-              const response = await fetch(scriptURL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(jsonData),
-              });
-          
-              if (response.ok) {
-                const result = await response.json();
-                alert('success: ' + JSON.stringify(result));
-              } else {
-                alert('error: ' + response.statusText);
-              }
-            } catch (error) {
-              alert('failed in middle: ' + error.message);
-            }
-          });
-
-
-
-           //on reload, I want everything to reset
-        window.onload = function() { //window.onload is an event that fires whenever i reload
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]'); //idk if getElementById("period") would work
-            checkboxes.forEach((checkbox) => {
-                checkbox.checked = false; 
-            });
-
-            const selected = document.getElementById("day");
-            selected.value="Monday";
-
-            const teach = document.getElementById("teacher");
-            teach.value="Kim";
-
-            const written = document.getElementById("question3");
-            written.value=""
-        };
-
-
-
-        function getValue(){
-            //array of checkbox items
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-            //do a loop that checks which one has been checked 
-            var periods = [];
-            checkboxes.forEach((checkbox) => {
-                if (checkbox.checked) {
-                    periods.push(checkbox.value);
-                }
-                
-            });
-
-
-            return periods;
-        }
-
-        //make sure it sends the actual values of the html page
-        function submitForm(){
-
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]'); //idk if getElementById("period") would work
-            checkboxes.forEach((checkbox) => {
-                checkbox.checked = false; 
-            });
-
-            const selected = document.getElementById("day");
-            selected.value="Monday";
-
-            const teach = document.getElementById("teacher");
-            teach.value="Kim";
-
-            const written = document.getElementById("question3");
-            written.value=""
-            
-            const data = {
-                teacher: document.getElementById("teacher").value,
-                day: document.getElementById("day").value,
-                period: getValue().value,
-                reason:document.getElementById("question3").value
-            };
-
-            console.log("bob");
-            console.log(day + " dayL ");
-
-            console.log(data)
-            
-
-            console.log(teacher)
-            
-            
-            google.script.run.withSuccessHandler(onSuccess).processFormData(data);
-        }
-
-        function onSuccess(message) {
-            //make new formm (this didn't really work...)
-            console.log("submited???")
-            alert(message)
-            document.getElementById("quiz").reset(); 
-          }
-
-    </script>
+    <script src="main.js"> </script>
 </body>
 
 </html>

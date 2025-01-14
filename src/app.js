@@ -42,7 +42,20 @@ Method is called on submission trigger of the google form app. Manages creation 
 @pre: n/aw
 @post: 4 arrays with corresponding values from the google form, runs the findteacher function that triggers the distribution 
 */
+function doPost(e) {
+    var data = JSON.parse(e.postData.contents);  // Get the posted JSON data
 
+    // Add CORS headers to allow cross-origin requests
+    return ContentService.createTextOutput(
+        JSON.stringify({ message: "Data received successfully" })
+    )
+        .setMimeType(ContentService.MimeType.JSON)
+        .setHeaders({
+            'Access-Control-Allow-Origin': '*',  // Allow all origins (can be restricted for security)
+            'Access-Control-Allow-Methods': 'POST', // Allow POST requests
+            'Access-Control-Allow-Headers': 'Content-Type' // Allow headers like Content-Type
+        });
+}
 
 /*
 Method is called on submission trigger of the google form app. Manages creation and reading of results file.
