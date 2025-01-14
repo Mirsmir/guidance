@@ -171,7 +171,9 @@ document.getElementById('booking').addEventListener('submit', async function (ev
         const response = await fetch(scriptURL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify("wjdawjd")
+            body: JSON.stringify(jsonData),
+            redirect: "follow"
+
         });
 
         // Check for successful response
