@@ -43,6 +43,7 @@ Method is called on submission trigger of the google form app. Manages creation 
 @post: 4 arrays with corresponding values from the google form, runs the findteacher function that triggers the distribution 
 */
 function doPost(e) {
+
     var data = JSON.parse(e.postData.contents);  // Parse incoming JSON data
 
     // Set CORS headers to allow cross-origin requests
