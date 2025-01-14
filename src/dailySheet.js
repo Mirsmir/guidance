@@ -60,7 +60,7 @@ function createSheets(teacherSheets) {
     console.log(yesterdayName)
     const newSheetName = formatDate(new Date(today.setDate(today.getDate() + 14))); //onec again will change month and year if necessary
     console.log(newSheetName)
-    yesteryear(0, yesterdayName, teacherSheets.getSheets());
+    yesteryear(0, yesterdayName, teacherSheets.getSheets(), teacherSheets);
 
     if (!teacherSheets.getSheetByName(newSheetName)) { //make sure theres no duplicates 
         const newSheet = teacherSheets.insertSheet(newSheetName);
@@ -84,7 +84,7 @@ function formatDate(date) {//  format  date as "YYYY-MM-DD"
 @params: index, name/current date/url to sheet
 */
 
-function yesteryear(i, yesterdayName, teacherSheets) {
+function yesteryear(i, yesterdayName, teacherSheets, sheet) {
 
     if (i >= teacherSheets.length) {
         return;
@@ -96,10 +96,10 @@ function yesteryear(i, yesterdayName, teacherSheets) {
     console.log();
 
     if (teacherSheets[i] && teacherSheets[i].getName() === yesterdayName) {
-        teacherSheets.deleteSheet(teacherSheets[i]);
+        sheet.deleteSheet(teacherSheets[i]);
         return;
     }
 
-    yesteryear(i + 1, yesterdayName, teacherSheets);
+    yesteryear(i + 1, yesterdayName, teacherSheets, sheet);
 
 }

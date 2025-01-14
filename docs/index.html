@@ -281,87 +281,7 @@
         
     </style>
 
-    <script>
-        //on reload, I want everything to reset
-        window.onload = function() { //window.onload is an event that fires whenever i reload
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]'); //idk if getElementById("period") would work
-            checkboxes.forEach((checkbox) => {
-                checkbox.checked = false; 
-            });
 
-            const selected = document.getElementById("day");
-            selected.value="Monday";
-
-            const teach = document.getElementById("teacher");
-            teach.value="Kim";
-
-            const written = document.getElementById("question3");
-            written.value=""
-        };
-
-
-
-        function getValue(){
-            //array of checkbox items
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-            //do a loop that checks which one has been checked 
-            var checked = [];
-            checkboxes.forEach((checkbox) => {
-                if (checkbox.checked) {
-                    checked.push(checkbox.value);
-                }
-                
-            });
-
-
-            return checked;
-        }
-
-        //make sure it sends the actual values of the html page
-        function submitForm(){
-
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]'); //idk if getElementById("period") would work
-            checkboxes.forEach((checkbox) => {
-                checkbox.checked = false; 
-            });
-
-            const selected = document.getElementById("day");
-            selected.value="Monday";
-
-            const teach = document.getElementById("teacher");
-            teach.value="Kim";
-
-            const written = document.getElementById("question3");
-            written.value=""
-            
-            const data = {
-                teacher: document.getElementById("teacher").value,
-                day: document.getElementById("day").value,
-                period: getValue().value,
-                reason:document.getElementById("question3").value
-            };
-
-            console.log("bob");
-            console.log(day);
-
-            console.log(data)
-            
-
-            console.log(teacher)
-            
-            
-            google.script.run.withSuccessHandler(onSuccess).processFormData(data);
-        }
-
-        function onSuccess(message) {
-            //make new formm (this didn't really work...)
-            console.log("submited???")
-            alert(message)
-            document.getElementById("quiz").reset(); 
-          }
-
-    </script>
 
 
 </head>
@@ -504,10 +424,14 @@
                     <textarea id="question3" name="question3" rows="4" placeholder="Enter your answer here"></textarea>
                 </div>
 
-                <!-- <div class="question"> //was going to use this for student nunmber
-                    <h1 class="questionHeader" required >4. Reason for appointment: *</h1>
-                    <textarea id="question3" name="question3" rows="4" placeholder="Enter your answer here"></textarea>
-                </div> -->
+                <hr>
+
+                 <div class="question"> 
+                    <h1 class="questionHeader" required >4. Student Number: *</h1>
+                    <textarea id="question3" name="question3" rows="4" placeholder="Enter number here"></textarea>
+                </div> 
+
+
                     
                 <a id="button" href="#" class="submit" onclick="submitForm()">Submit</a>
 
@@ -521,7 +445,7 @@
 
     <script>
         
-        function book() {
+       function book() {
           window.open("https://docs.google.com/forms/d/1F6rKeNWtA-Yx3CpomoMFaDUpmuuVBtmIEbe-9ZxMtrU/edit")
         }
 
@@ -534,7 +458,119 @@
                 questionSection.style.opacity = "1";
             }
 
-        });
+        }); 
+    
+
+
+        document.getElementById('myForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); //prevents default submissions for html??? 
+          
+            const form = event.target;
+            const formData = new FormData(form);
+            const jsonData = Object.fromEntries(formData.entries()); //  to JSON 
+          
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbzxQL30an6xIeH5bjQWLdMEF0Jd2Bl61rMZa9vV9eJKypqMCknW0DxJi3xxWh52yraRSA/exec';//json data to ap script endpoint
+            console.log
+          
+            try {
+              const response = await fetch(scriptURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(jsonData),
+              });
+          
+              if (response.ok) {
+                const result = await response.json();
+                alert('success: ' + JSON.stringify(result));
+              } else {
+                alert('error: ' + response.statusText);
+              }
+            } catch (error) {
+              alert('failed in middle: ' + error.message);
+            }
+          });
+
+
+
+           //on reload, I want everything to reset
+        window.onload = function() { //window.onload is an event that fires whenever i reload
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]'); //idk if getElementById("period") would work
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = false; 
+            });
+
+            const selected = document.getElementById("day");
+            selected.value="Monday";
+
+            const teach = document.getElementById("teacher");
+            teach.value="Kim";
+
+            const written = document.getElementById("question3");
+            written.value=""
+        };
+
+
+
+        function getValue(){
+            //array of checkbox items
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            //do a loop that checks which one has been checked 
+            var periods = [];
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    periods.push(checkbox.value);
+                }
+                
+            });
+
+
+            return periods;
+        }
+
+        //make sure it sends the actual values of the html page
+        function submitForm(){
+
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]'); //idk if getElementById("period") would work
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = false; 
+            });
+
+            const selected = document.getElementById("day");
+            selected.value="Monday";
+
+            const teach = document.getElementById("teacher");
+            teach.value="Kim";
+
+            const written = document.getElementById("question3");
+            written.value=""
+            
+            const data = {
+                teacher: document.getElementById("teacher").value,
+                day: document.getElementById("day").value,
+                period: getValue().value,
+                reason:document.getElementById("question3").value
+            };
+
+            console.log("bob");
+            console.log(day + " dayL ");
+
+            console.log(data)
+            
+
+            console.log(teacher)
+            
+            
+            google.script.run.withSuccessHandler(onSuccess).processFormData(data);
+        }
+
+        function onSuccess(message) {
+            //make new formm (this didn't really work...)
+            console.log("submited???")
+            alert(message)
+            document.getElementById("quiz").reset(); 
+          }
+
     </script>
 </body>
 
