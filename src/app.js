@@ -42,24 +42,98 @@ Method is called on submission trigger of the google form app. Manages creation 
 @pre: n/aw
 @post: 4 arrays with corresponding values from the google form, runs the findteacher function that triggers the distribution 
 */
+// function doPost(e) {
+//     // Parse incoming JSON data
+
+//     console.log("fetched");
+//     var data = JSON.parse(e.postData.contents);
+
+//     // Respond with a success message
+//     return ContentService.createTextOutput(
+//         JSON.stringify({ message: "Data received successfully", receivedData: data })
+//     )
+//         .setMimeType(ContentService.MimeType.JSON)
+//         .setHeaders({
+//             'Access-Control-Allow-Origin': '*',
+//             'Access-Control-Allow-Methods': 'POST, OPTIONS',
+//             'Access-Control-Allow-Headers': 'Content-Type',
+//         });
+// }
+
+// function doOptions() {
+//     return ContentService.createTextOutput("")
+//         .setMimeType(ContentService.MimeType.JSON)
+//         .setHeaders({
+//             'Access-Control-Allow-Origin': '*',
+//             'Access-Control-Allow-Methods': 'POST, OPTIONS',
+//             'Access-Control-Allow-Headers': 'Content-Type',
+//         });
+
+// }
+
 function doPost(e) {
+    console.log("Received request:", JSON.stringify(e));
+    console.log("Request method:", e.parameter.httpMethod);
 
-    var data = JSON.parse(e.postData.contents);  // Parse incoming JSON data
+    // Allow access from any origin (*) for development purposes
+    // You should restrict this to your specific application's domain in production
+    var origin = e.parameter.origin;
+    if (!origin) {
+        origin = "*";
+    }
 
-    // Set CORS headers to allow cross-origin requests
-    var response = ContentService.createTextOutput(
-        JSON.stringify({ message: "Data received successfully", receivedData: data })
-    );
+    // Set CORS headers
+    ContentService.createTextOutput("")
+        .setMimeType(ContentService.MimeType.JSON)
+        .setHeaders({
+            'Access-Control-Allow-Origin': origin,
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Credentials': 'true' // Allow cookies for authenticated requests (optional)
+        });
 
-    // Set CORS headers to allow requests from any origin
-    response.setMimeType(ContentService.MimeType.JSON);
-    response.setHeaders({
-        'Access-Control-Allow-Origin': '*',  // Allow all origins (can be restricted for security)
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',  // Allow POST and OPTIONS methods
-        'Access-Control-Allow-Headers': 'Content-Type',  // Allow Content-Type header
-    });
+    console.log("CORS headers set.");
 
-    return response;
+    // Check if it's an OPTIONS request for preflight (skip processing data)
+    if (e.parameter.httpMethod === 'OPTIONS') {
+        console.log("Received OPTIONS request. Returning empty response.");
+        return ContentService.createTextOutput('');
+    }
+
+    console.log("Processing POST request.");
+
+    // Process data sent from the form
+    const formData = JSON.parse(e.parameter.postData);
+    console.log("Received data:", formData);
+
+    const response = {
+        status: "success",
+        data: "Data received: " + JSON.stringify(formData)
+    };
+
+    console.log("Sending response:", JSON.stringify(response));
+    return ContentService.createTextOutput(JSON.stringify(response));
+}
+
+function scrapeWebsite() {
+    // URL of your hosted website
+    const url = "https://mirsmir.github.io/guidance/#";
+
+    try {
+        // Fetch the HTML content of the website
+        const response = UrlFetchApp.fetch(url);
+        const htmlContent = response.getContentText();
+
+        // Parse the HTML (if necessary)
+        const data = extractDataFromHTML(htmlContent);
+
+        // Log or process the extracted data
+        console.log(data);
+
+        return data;
+    } catch (error) {
+        console.log("Error fetching or parsing the website: " + error.message);
+    }
 }
 
 /*

@@ -140,53 +140,125 @@ button.addEventListener("click", () => {
 
 //*****************************************************************************/
 
+// document.getElementById('booking').addEventListener('submit', async function (event) {
+//     event.preventDefault();  // Prevent default form submission
+
+//     const form = event.target;
+
+//     // Collect form data
+//     const formData = new FormData(form);
+
+//     // Prepare JSON object from form data
+//     var jsonData = {};
+//     formData.forEach((value, key) => {
+//         // For checkboxes, ensure we handle multiple selections
+//         if (jsonData[key]) {
+//             if (Array.isArray(jsonData[key])) {
+//                 jsonData[key].push(value);
+//             } else {
+//                 jsonData[key] = [jsonData[key], value];
+//             }
+//         } else {
+//             jsonData[key] = value;
+//         }
+//     });
+
+//     jsonData = {
+//         day: "just die"
+//     }
+
+//     console.log(jsonData);
+
+//     // The URL to your Google Apps Script endpoint
+//     const scriptURL = 'https://script.google.com/macros/s/AKfycbzxQL30an6xIeH5bjQWLdMEF0Jd2Bl61rMZa9vV9eJKypqMCknW0DxJi3xxWh52yraRSA/exec   ';
+
+//     // try {
+//     //     // Send data to the Google Apps Script endpoint via POST request
+//     //     const response = await fetch(scriptURL, {
+//     //         method: 'POST',
+//     //         headers: { 'Content-Type': 'application/json' },
+//     //         body: JSON.stringify(jsonData),
+//     //         redirect: "follow"
+
+//     //     });
+//     //     // Check for successful response
+//     //     if (response.ok) {
+//     //         const result = await response.json();
+//     //         alert('Success: ' + JSON.stringify(result));
+//     //     } else {
+//     //         alert('Error: ' + response.statusText);
+//     //     }
+//     // } catch (error) {
+//     //     alert('Failed to send data: ' + error.message);
+//     // }
+
+//     relaodForm();
+
+
+//     fetch(scriptURL, {
+//         redirect: "follow",  // Allow redirects
+//         method: "POST",      // POST request
+//         body: JSON.stringify(jsonData), // Send JSON data
+//         headers: {
+//             "Content-Type": "application/json", // Correct content type
+//         },
+//     })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error(`HTTP error! status: ${response.status}`);
+//             }
+//             return response.json(); // Parse the JSON response
+//         })
+//         .then(data => {
+//             console.log("Success:", data);
+//         })
+//         .catch(error => {
+//             console.error("Error:", error);
+//         });
+// });
+
+
+//*****************************************************************************/
+
 document.getElementById('booking').addEventListener('submit', async function (event) {
-    event.preventDefault();  // Prevent default form submission
+    event.preventDefault(); // Prevent default form submission
 
     const form = event.target;
-
-    // Collect form data
     const formData = new FormData(form);
 
-    // Prepare JSON object from form data
+    console.log("Form data:", formData);
+
     const jsonData = {};
-    formData.forEach((value, key) => {
-        // For checkboxes, ensure we handle multiple selections
-        if (jsonData[key]) {
-            if (Array.isArray(jsonData[key])) {
-                jsonData[key].push(value);
-            } else {
-                jsonData[key] = [jsonData[key], value];
-            }
-        } else {
-            jsonData[key] = value;
-        }
-    });
-
-    // The URL to your Google Apps Script endpoint
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzxQL30an6xIeH5bjQWLdMEF0Jd2Bl61rMZa9vV9eJKypqMCknW0DxJi3xxWh52yraRSA/exec';
-
-    try {
-        // Send data to the Google Apps Script endpoint via POST request
-        const response = await fetch(scriptURL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(jsonData),
-            redirect: "follow"
-
-        });
-
-        // Check for successful response
-        if (response.ok) {
-            const result = await response.json();
-            alert('Success: ' + JSON.stringify(result));
-        } else {
-            alert('Error: ' + response.statusText);
-        }
-    } catch (error) {
-        alert('Failed to send data: ' + error.message);
+    for (const [key, value] of formData.entries()) {
+        jsonData[key] = value;
     }
 
+    console.log("JSON data:", jsonData);
+
+    const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // Replace with your script ID
+
+    try {
+        console.log("Sending fetch request.");
+        const response = await fetch(scriptURL, {
+            method: 'POST',
+            body: JSON.stringify(jsonData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        console.log("Fetch response status:", response.status);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Received response data:", data);
+        console.log("Success:", data);
+    } catch (error) {
+        console.error("Error:", error);
+    }
     relaodForm();
 });
 
