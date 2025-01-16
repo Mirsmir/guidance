@@ -4,14 +4,11 @@
 /*A program that manages input and output from google's apps (forms, spreadsheets). 
 An algorithm distributes different inputs by different timeslots, and properly formats the output. 
 It manages automatic emails for reminders and updates. OKAY AM I HERE
-@date 11 June 2024
+@date 11 June 2024, January 15th 2025
 @author Rachel Smirnov
-@version 1.0
+@version 1.0, 2.0
 
 */
-
-
-
 
 
 const data = [];
@@ -414,7 +411,6 @@ function autoEmail(email, subject, body) {
 
 
 /* 
-hbu
 runs confirm check on a timely basis for each seperate sheet
 i have no clue what I meant here by confirm.... uh OH.
 @params: n/a
@@ -460,9 +456,20 @@ function confirmCheck(ssx, range) { //because I dont have the program working ac
     }
 }
 
+/*
+test function
+*/
+
 function testGetSheetName() {
-    findSheetDay(teach1, 20251030);
+    findSheetDay(teach1, 20250130);
 }
+
+/*
+    handels the sorting and consesecutive search
+    @params: teacherSheet (spreadsheet), date to search for
+    @pre: n/a
+    @post: returns the index
+*/
 
 function findSheetDay(teacherSheet, date) { //when you pass in a spreadsheet, it will search for that spreasheet
     const smallSheet = teacherSheet.getSheets();
@@ -478,10 +485,18 @@ function findSheetDay(teacherSheet, date) { //when you pass in a spreadsheet, it
 
 
     sortDays(sheetNames);
+    console.log(sheetNames);
 
-    console.log(sheetNames)
+    console.log(binarySearch(sheetNames, date, sheetNames.length - 1, 0));
+    // console.log(index);
+
 }
-
+/*
+    sorts with insertion sort ascending 
+    @params: sheetNames, the array to sort (has sheet names as integers in it)
+    @pre: sheetNames has to have the hyphens removed
+    @post: sorted array
+*/
 function sortDays(sheetNames) { //ascending sort
 
     for (let i = 1; i < sheetNames.length; i++) {
@@ -496,4 +511,31 @@ function sortDays(sheetNames) { //ascending sort
         }
         sheetNames[j + 1] = temp; //when it find a spot that isnt bigger than the next, place it there.
     }
+}
+/*
+    binary search function to find the index of the sheet with the same date
+    @params: array to search, date to search for, max index, min index
+    @pre: n/a
+    @post: return valid index or break recursion
+*/
+
+function binarySearch(array, date, max, min) {
+    let m = Math.floor((max + min) / 2);
+
+    console.log(array[m] + " " + m + " array, index");
+
+    if (min > max) //if m exeeds these bounds then the date is just not in the thing
+        return -1;
+
+    if (array[m] == date) {
+        console.log("were here");
+        return m;
+    }
+
+    if (date > array[m]) {//is it in the top half or second??? 
+        console.log("calling again, it's greater");
+        return binarySearch(array, date, max, m + 1) //you have to shift the middle 
+    }
+    if (date < array[m])//its below the middle point
+        return binarySearch(array, date, m - 1, min) //already checked m so change that value
 }
