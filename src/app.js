@@ -83,57 +83,51 @@ function doPost(e) {
     }
 
     // Set CORS headers
-    ContentService.createTextOutput("")
-        .setMimeType(ContentService.MimeType.JSON)
-        .setHeaders({
-            'Access-Control-Allow-Origin': origin,
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Credentials': 'true' // Allow cookies for authenticated requests (optional)
-        });
+    var response = ContentService.createTextOutput("");
+    response.setMimeType(ContentService.MimeType.JSON);
+    response.setHeader('Access-Control-Allow-Origin', origin);
+    response.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    response.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow cookies for authenticated requests (optional)
 
     console.log("CORS headers set.");
 
-    // Check if it's an OPTIONS request for preflight (skip processing data)
+    // Handle OPTIONS request for preflight
     if (e.parameter.httpMethod === 'OPTIONS') {
-        console.log("Received OPTIONS request. Returning empty response.");
-        return ContentService.createTextOutput('');
+        console.log("Received OPTIONS request. Returning preflight response.");
+        return response;
     }
-
-    console.log("Processing POST request.");
 
     // Process data sent from the form
-    const formData = JSON.parse(e.parameter.postData);
-    console.log("Received data:", formData);
+    if (e.parameter.httpMethod === 'POST') {
+        console.log("Processing POST request.");
 
-    const response = {
-        status: "success",
-        data: "Data received: " + JSON.stringify(formData)
-    };
+        try {
+            const formData = JSON.parse(e.parameter.postData);
+            console.log("Received data:", formData);
 
-    console.log("Sending response:", JSON.stringify(response));
-    return ContentService.createTextOutput(JSON.stringify(response));
-}
+            const responseData = {
+                status: "success",
+                data: "Data received: " + JSON.stringify(formData)
+            };
 
-function scrapeWebsite() {
-    // URL of your hosted website
-    const url = "https://mirsmir.github.io/guidance/#";
+            response.setContent(JSON.stringify(responseData));
+            console.log("Sending response:", JSON.stringify(responseData));
+            return response;
 
-    try {
-        // Fetch the HTML content of the website
-        const response = UrlFetchApp.fetch(url);
-        const htmlContent = response.getContentText();
-
-        // Parse the HTML (if necessary)
-        const data = extractDataFromHTML(htmlContent);
-
-        // Log or process the extracted data
-        console.log(data);
-
-        return data;
-    } catch (error) {
-        console.log("Error fetching or parsing the website: " + error.message);
+        } catch (error) {
+            console.error("Error processing data:", error);
+            response.setContent(JSON.stringify({ status: "error", message: error.message }));
+            response.setStatusCode(500); // Internal Server Error
+            return response;
+        }
     }
+
+    // If the request method is not POST or OPTIONS
+    console.error("Unsupported HTTP method:", e.parameter.httpMethod);
+    response.setContent(JSON.stringify({ status: "error", message: "Unsupported HTTP method" }));
+    response.setStatusCode(405); // Method Not Allowed
+    return response;
 }
 
 /*
@@ -463,5 +457,43 @@ function confirmCheck(ssx, range) { //because I dont have the program working ac
         if (checks[0][i]) {
             autoEmail(emails[0][i], "Confirmed", "Your time is at: " + times[0][i]);
         }
+    }
+}
+
+function testGetSheetName() {
+    findSheetDay(teach1, 20251030);
+}
+
+function findSheetDay(teacherSheet, date) { //when you pass in a spreadsheet, it will search for that spreasheet
+    const smallSheet = teacherSheet.getSheets();
+
+    const sheetNames = smallSheet.map(smallSheet => smallSheet.getName()); // made an array with all of the names of the sheets
+
+    //makes the number easier to sort 
+
+    for (let i = 0; i < sheetNames.length; i++) {
+        sheetNames[i] = sheetNames[i].replace("-", "");
+        sheetNames[i] = sheetNames[i].replace("-", "");
+    }
+
+
+    sortDays(sheetNames);
+
+    console.log(sheetNames)
+}
+
+function sortDays(sheetNames) { //ascending sort
+
+    for (let i = 1; i < sheetNames.length; i++) {
+
+        let j = i - 1;
+        const temp = sheetNames[i]; //temp is the further one
+
+        while (j >= 0 && sheetNames[j] > temp) { //wanna compare temp to each element in the array, and move the ones that are smaller 
+            sheetNames[j + 1] = sheetNames[j]; //the next one is equal to previous, smaller is moved back
+
+            j--;
+        }
+        sheetNames[j + 1] = temp; //when it find a spot that isnt bigger than the next, place it there.
     }
 }

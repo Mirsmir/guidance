@@ -45,7 +45,10 @@ function initialVersion(teacherSheet) {
 
 
     }
-
+    //part 6, 7, 9 for first link??? 
+    // for the second link: classes, inheritance, recursion
+    //very little grade 11 related stuff
+    //
 }
 //automatic creating and deletion of week day sheets:
 /*
