@@ -1,7 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /*
-
+    Adding functions for daily run things. This will keep track of the sheets that should be in the database. 
+    @date: January 15, 2025
+    @author @Mirsmir
+    @version: 1.0
 */
 
 /*
