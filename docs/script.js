@@ -1,4 +1,15 @@
-
+/*
+Front end UI functions for guidance web app. Responsible for data fetching/sending requests.
+@date: January 15, 2025
+@author @Mirsmir
+@version: 1.0
+*/
+/*
+    gets the value of the checkboxes, boolean value
+    @params: n/a
+    @pre: n/a
+    @post: returns the checkboxes that were clicked
+*/
 function getValue() {
     //array of checkbox items
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -15,6 +26,13 @@ function getValue() {
 
     return periods;
 }
+
+/*
+    resets to default options/clears fields when form submitted
+    @params: n/a
+    @pre: n/a
+    @post: reset/field clear
+*/
 
 //make sure it sends the actual values of the html page
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -66,6 +84,12 @@ function relaodForm() {
 
 //*****************************************************************************/
 
+/*
+    resets the quiz upon window reload
+    @params: n/a
+    @pre: n/a
+    @post: reset to default config
+*/
 
 window.onload = function () { //window.onload is an event that fires whenever i reload
     const checkboxes = document.querySelectorAll('input[type="checkbox"]'); //idk if getElementById("period") would work
@@ -88,7 +112,12 @@ window.onload = function () { //window.onload is an event that fires whenever i 
 
 //*****************************************************************************/
 
-
+/*
+    hides the question box from the user and shows upon button click
+    @params: n/a
+    @pre: n/a
+    @post: shows the quiz class div
+*/
 const button = document.getElementById("button");
 const questionSection = document.getElementById("quiz");
 
@@ -219,7 +248,12 @@ button.addEventListener("click", () => {
 
 
 //*****************************************************************************/
-
+/*
+    send fetch request to the app script server
+    @params: n/a
+    @pre: app script web app deployement url correct, and headers are present in the app script project
+    @post: sends the data from the html content
+*/
 document.getElementById('booking').addEventListener('submit', async function (event) {
     event.preventDefault(); // Prevent default form submission
 

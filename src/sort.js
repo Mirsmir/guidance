@@ -6,16 +6,16 @@ Finds correpsonding teacher, triggers findperiod
 @post: call findPeriod function
 */
 function findTeacher(timestamp, email, teacher, period, reason) {
-    Logger.log("hreer");
-    Logger.log(teacher + " are u there?????")
+    console.log("hreer");
+    console.log(teacher + " are u there?????")
     var values = [[timestamp[0], email[0], reason[0], period[0]]] //google app script requires you to pass values into sheets with a 2D array, rows and cols, even if youre just using one row
 
     switch (String(teacher)) {
 
         case "Ms. Kim":
             //we have to find an empty slot
-            Logger.log(period + "wwjjwj");
-            Logger.log(period[0] + "so why did this work");
+            console.log(period + "wwjjwj");
+            console.log(period[0] + "so why did this work");
             findPeriod(teach3, values);
             break;
         case "Ms. Dacey":
