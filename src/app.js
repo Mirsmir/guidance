@@ -4,7 +4,7 @@
 /*A program that manages input and output from google's apps (forms, spreadsheets). 
 An algorithm distributes different inputs by different timeslots, and properly formats the output. 
 It manages automatic emails for reminders and updates. OKAY AM I HERE
-@date 11 June 2024, January 15th 2025
+@date June 2024, January 15th 2025
 @author Rachel Smirnov
 @version 1.0, 2.0
 
