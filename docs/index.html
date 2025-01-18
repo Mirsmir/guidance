@@ -468,28 +468,18 @@ Frontend UI for guidance appointment booking system at Sir William Mulock. Makes
     getBtn = document.getElementById('getBtn');
 
     function setCookie() {
-        if(document.cookie.length !== 0){
-            result.innerHTML = 
-              `Cookie is already settled!!`;
-        }
-        else{
-            document.cookie = 
-              "visitorname: rahcek lsmirnov; ";
-        }
-        
+        if(document.cookie.length !== 0)
+            result.innerHTML =  `Cookie is already odnoe`;
+        else
+            document.cookie = "visitorname: rahcek lsmirnov; ";
     }
-
     function getCookie(){
-        if(document.cookie.length !== 0){
-            result.innerHTML = 
-              `Cookie: <b>${document.cookie}</b>`;
-        }
-        else{
+        if(document.cookie.length !== 0)
+            result.innerHTML =  `Cookie: <b>${document.cookie}</b>`;
+        else
             result.innerHTML = 
               `Please set the cookie first!!`;
-        }
     }
-
     setBtn.addEventListener('click', setCookie);
     getBtn.addEventListener('click', getCookie);
 
