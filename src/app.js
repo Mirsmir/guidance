@@ -1,143 +1,28 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-
 /*A program that manages input and output from google's apps (forms, spreadsheets). 
 An algorithm distributes different inputs by different timeslots, and properly formats the output. 
-It manages automatic emails for reminders and updates. OKAY AM I HERE
-@date 11 June 2024, January 15th 2025
+It manages automatic emails for reminders and updates.
+@date Jan 2025
 @author Rachel Smirnov
-@version 1.0, 2.0
+@version 1.0
 
 */
-
-
-const data = [];
-const timestamps = [];
-const emails = [];
-const reasons = [];
-const periods = [];
-const teachers = [];
-
-// eslint-disable-next-line no-undef
 const ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
-// eslint-disable-next-line no-undef
 const MailApp = GmailApp;
 // const sheetName = Utilities.formatperiod(day, Session.getScriptTimeZone(), "MM/dd/yyyy");
-// eslint-disable-next-line no-undef
 const teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1qr3CVw9SAR-xFSaGGi9gpSXyujdP9pb3wbyHGdF89DE/edit?gid=0#gid=0'); //avery
-// eslint-disable-next-line no-undef
 const teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
-// eslint-disable-next-line no-undef
 const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
 
 
-
-
-/*
-Method is called on submission trigger of the google form app. Manages creation and reading of results file.
-@params: n/a
-@pre: n/aw
-@post: 4 arrays with corresponding values from the google form, runs the findteacher function that triggers the distribution 
-*/
-// function doPost(e) {
-//     // Parse incoming JSON data
-
-//     console.log("fetched");
-//     var data = JSON.parse(e.postData.contents);
-
-//     // Respond with a success message
-//     return ContentService.createTextOutput(
-//         JSON.stringify({ message: "Data received successfully", receivedData: data })
-//     )
-//         .setMimeType(ContentService.MimeType.JSON)
-//         .setHeaders({
-//             'Access-Control-Allow-Origin': '*',
-//             'Access-Control-Allow-Methods': 'POST, OPTIONS',
-//             'Access-Control-Allow-Headers': 'Content-Type',
-//         });
-// }
-
-// function doOptions() {
-//     return ContentService.createTextOutput("")
-//         .setMimeType(ContentService.MimeType.JSON)
-//         .setHeaders({
-//             'Access-Control-Allow-Origin': '*',
-//             'Access-Control-Allow-Methods': 'POST, OPTIONS',
-//             'Access-Control-Allow-Headers': 'Content-Type',
-//         });
-
-// }
-
-function doPost(e) {
-    console.log("Received request:", JSON.stringify(e));
-    console.log("Request method:", e.parameter.httpMethod);
-
-    // Allow access from any origin (*) for development purposes
-    // You should restrict this to your specific application's domain in production
-    var origin = e.parameter.origin;
-    if (!origin) {
-        origin = "*";
-    }
-
-    // Set CORS headers
-    var response = ContentService.createTextOutput("");
-    response.setMimeType(ContentService.MimeType.JSON);
-    response.setHeader('Access-Control-Allow-Origin', origin);
-    response.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    response.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow cookies for authenticated requests (optional)
-
-    console.log("CORS headers set.");
-
-    // Handle OPTIONS request for preflight
-    if (e.parameter.httpMethod === 'OPTIONS') {
-        console.log("Received OPTIONS request. Returning preflight response.");
-        return response;
-    }
-
-    // Process data sent from the form
-    if (e.parameter.httpMethod === 'POST') {
-        console.log("Processing POST request.");
-
-        try {
-            const formData = JSON.parse(e.parameter.postData);
-            console.log("Received data:", formData);
-
-            const responseData = {
-                status: "success",
-                data: "Data received: " + JSON.stringify(formData)
-            };
-
-            response.setContent(JSON.stringify(responseData));
-            console.log("Sending response:", JSON.stringify(responseData));
-            return response;
-
-        } catch (error) {
-            console.error("Error processing data:", error);
-            response.setContent(JSON.stringify({ status: "error", message: error.message }));
-            response.setStatusCode(500); // Internal Server Error
-            return response;
-        }
-    }
-
-    // If the request method is not POST or OPTIONS
-    console.error("Unsupported HTTP method:", e.parameter.httpMethod);
-    response.setContent(JSON.stringify({ status: "error", message: "Unsupported HTTP method" }));
-    response.setStatusCode(405); // Method Not Allowed
-    return response;
-}
-
-/*
-Method is called on submission trigger of the google form app. Manages creation and reading of results file.
-@params: n/a
-@pre: n/a
-@post: 4 arrays with corresponding values from the google form, runs the findteacher function that triggers the distribution 
-*/
 function submit() {
+    var timestamps = [];
+    var emails = [];
+    var reasons = [];
+    var periods = [];
+    var teachers = [];
 
-    console.log("here");
+    Logger.log("here");
 
-    // eslint-disable-next-line no-undef
     var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = spreadsheet.getActiveSheet();//Get the URL of the active spreadsheet and sheet
     var spreadsheetUrl = spreadsheet.getUrl();
@@ -146,46 +31,41 @@ function submit() {
 
     var x = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1);
     timestamps.push(x.getValues()); //will get all objects in range from script
-    console.log(x); //just testing
+    Logger.log(x); //just testing
 
-    emails.push(sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).getValues()); //what the hell does this
+    emails.push(sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).getValues());
     reasons.push(sheet.getRange(2, 4, sheet.getLastRow() - 1, 1).getValues());
     periods.push(sheet.getRange(2, 3, sheet.getLastRow() - 1, 1).getValues());
     teachers.push(sheet.getRange(2, 5, sheet.getLastRow() - 1, 1).getValues());
     // days.push(sheet.getRange(2, 6, sheet.getLastRow() - 1, 1).getValues()); //okay so it starts at the 2nd row, then goes all the way down to the 
 
-    console.log(lastRow + " fetched"); //just checking it work
-    console.log(periods);
+    Logger.log(lastRow + " fetched"); //just checking it work
+    Logger.log(periods);
     findTeacher(timestamps[0][lastRow], emails[0][lastRow], teachers[0][lastRow], periods[0][lastRow], reasons[0][lastRow]);
 }
 
-/*
-Finds correpsonding teacher, triggers findperiod
-@params: arrays from submit function
-@pre: must have arrays with all vals
-@post: call findPeriod function
-*/
+
 function findTeacher(timestamp, email, teacher, period, reason) {
-    console.log("hreer");
+    Logger.log("hreer");
 
 
 
-    console.log(teacher + " are u there?????")
+    Logger.log(teacher + " are u there?????")
     var values = [[timestamp[0], email[0], reason[0], period[0]]] //google app script requires you to pass values into sheets with a 2D array, rows and cols, even if youre just using one row
 
     switch (String(teacher)) {
 
         case "Ms. Kim":
             //we have to find an empty slot
-            console.log(period + "wwjjwj");
-            console.log(period[0] + "so why did this work");
+            Logger.log(period + "wwjjwj");
+            Logger.log(period[0] + "so why did this work");
             findPeriod(teach3, values);
             break;
         case "Ms. Dacey":
             findPeriod(teach2, values);
             break;
         case "Ms. Avery":
-            console.log(timestamp, email, period, reason);
+            Logger.log(timestamp, email, period, reason);
             findPeriod(teach1, values);
             break;
     }
@@ -193,24 +73,18 @@ function findTeacher(timestamp, email, teacher, period, reason) {
 
 }
 
-/*
-finds the period that the student requested, read the cells and calls reading for available cell.
-@params: sheet to search,  values
-@pre: n/a
-@post: will run the add record function if applicable, otherwise will autimatically email of the unavailability during that week
-@placeholder in future versions, unavailibility will ty to get resolved with repeated searches through the remaining days of the week.
-*/
+
 function findPeriod(ssx, values) {
-    console.log(values[0][3]);
+    Logger.log(values[0][3]);
     switch (values[0][3]) {
         case "P1":
-            console.log(findDayOfWeek(values[0][0]) + " day of the week in the findPeriod function");
+            Logger.log(findDayOfWeek(values[0][0]) + " day of the week in the findPeriod function");
             if (readCells(ssx, 'B3:B9', 3, findDayOfWeek(values[0][0])).success) { //wanna check availabiloty of the period in that specific day
-                console.log("found it here");
+                Logger.log("found it here");
                 addRecord(ssx, readCells(ssx, 'B3:B9', 3, findDayOfWeek(values[0][0])).num, 2, values, findDayOfWeek(values[0][0]));
             }
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
-                console.log("unavailable.");
+                Logger.log("unavailable.");
                 // repeatSearch(findDayOfWeek(values[0][0]), 'B3:B9', ssx, 3, values);
                 autoEmail(values[0][1], "Guidance Appointment Unavailable", "Please resumbit the form on sunday, or anytimes during the next week before friday")
 
@@ -220,17 +94,17 @@ function findPeriod(ssx, values) {
             if (readCells(ssx, 'B12:B18', 12, findDayOfWeek(values[0][0])).success)
                 addRecord(ssx, readCells(ssx, 'B12:B18', 12, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
-                console.log("unavailable.");
+                Logger.log("unavailable.");
                 // repeatSearch(findDayOfWeek(values[0][0]), 'B12:B18', ssx, 12, values);
                 autoEmail(values[0][1], "Guidance Appointment Unavailable", "Please resumbit the form on sunday, or anytimes during the next week before friday")
             }
             break;
         case "P3":
-            console.log("are you here RIGHT NOW ARE YOU HERE");
+            Logger.log("are you here RIGHT NOW ARE YOU HERE");
             if (readCells(ssx, 'B21:B27', 21, findDayOfWeek(values[0][0])).success)
                 addRecord(ssx, readCells(ssx, 'B21:B27', 21, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
-                console.log("unavailable.");
+                Logger.log("unavailable.");
                 autoEmail(values[0][1], "Guidance Appointment Unavailable", "Please resumbit the form on sunday, or anytimes during the next week before friday")
                 // repeatSearch(findDayOfWeek(values[0][0]), 'B21:B27', ssx, 21, values);
             }
@@ -239,7 +113,7 @@ function findPeriod(ssx, values) {
             if (readCells(ssx, 'B30:B36', 30, findDayOfWeek(values[0][0])).success)
                 addRecord(ssx, readCells(ssx, 'B30:B36', 30, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
-                console.log("unavailable.");
+                Logger.log("unavailable.");
                 autoEmail(values[0][1], "Guidance Appointment Unavailable", "Please resumbit the form on sunday, or anytimes during the next week before friday")
 
                 // repeatSearch(findDayOfWeek(values[0][0]), 'B30:B36', ssx, 30, values);
@@ -249,26 +123,21 @@ function findPeriod(ssx, values) {
             if (readCells(ssx, 'B39:B45', 39, findDayOfWeek(values[0][0])).success)
                 addRecord(ssx, readCells(ssx, 'B39:B45', 39, findDayOfWeek(values[0][0])).val, 2, values, findDayOfWeek(values[0][0]));
             else { //meaning, the current day failed, and there are no more spots left, so we have to sort through the remaining days to try and find a day that has available spots in their requested period.
-                console.log("unavailable.");
+                Logger.log("unavailable.");
                 autoEmail(values[0][1], "Guidance Appointment Unavailable", "Please resumbit the form on sunday, or anytimes during the next week before friday")
 
                 // repeatSearch(findDayOfWeek(values[0][0]), 'B39:B45', ssx, 39, values);
             }
             break;
         default:
-            console.log("Could not access specified period");
+            Logger.log("Could not access specified period");
     }
 }
-/*
-Matches the timstamp day id with corresponding day
-@params: values
-@pre: must have a timestamp in values
-@post: will return the week day name
-*/
+
 
 function findDayOfWeek(values) {
     var dayOfWeek = values.getDay();
-    console.log(dayOfWeek + " day of wwek?");
+    Logger.log(dayOfWeek + " day of wwek?");
     switch (parseInt(dayOfWeek)) {
         //these are all moved up by 1 value, to ensure that students do not get appoitned on a date earlier than their submission.
         case 0: //meaning, they submitted the form on Sunday
@@ -288,12 +157,7 @@ function findDayOfWeek(values) {
     }
 }
 
-/*
-Will search through remaining days of the week to find extra availability
-@params: day of submission, data range (period)/row, spreadsheet,values
-@pre: must searchh from a specific reference point (weekday)
-@post: will find the next available time slot, or return unavaiilbility message
-*/
+
 
 function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search through it again, until we've checked all days until the end.
     switch (weekDay) {
@@ -308,7 +172,7 @@ function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search th
             }
             break;
         case "Tuesday":
-            for (i = 2; i < 5; i++) {
+            for (var i = 2; i < 5; i++) {
                 if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
                     addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(values)).val, 2, values, findDayOfWeek(values));
                 }
@@ -318,7 +182,7 @@ function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search th
             }
             break;
         case "Wednesday":
-            for (i = 3; i < 5; i++) {
+            for (var i = 3; i < 5; i++) {
                 if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
                     addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(i)).val, 2, values, findDayOfWeek(i));
                 }
@@ -329,8 +193,8 @@ function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search th
             }
             break;
         case "Thursday":
-            for (i = 4; i < 5; i++) {
-                console.log(findDayOfWeek(4.0));
+            for (var i = 4; i < 5; i++) {
+                Logger.log(findDayOfWeek(4.0));
                 if (readCells(ssx, range, row, findDayOfWeek(i)).success) {
                     addRecord(ssx, readCells(ssx, range, row, findDayOfWeek(i)).val, 2, values, findDayOfWeek(i));
                 }
@@ -342,17 +206,16 @@ function repeatSearch(weekDay, range, ssx, row, values) { //we'll just search th
             break;
         case "Friday":
             return "Please submit another response starting the following week.";
+        case "Monday":
+            return "Please submit another response starting the following week.";
+        case "Monday":
+            return "Please submit another response starting the following week."
     }
 
 }
-/*
-finds empty cells and returns if there is a space for append or not to higher functions
-@params: spreashseet id, range (period), starting row (for convenience), weekday
-@pre: sufficient range present in spreasheet, correct names/ids
-@post: will return slot with  available space
-*/
+
 function readCells(ssx, range, num, weekDay) {
-    console.log(weekDay);
+    Logger.log(weekDay);
 
     try { //because if submitted on friday, it wont be avialble till the next week
         var data = ssx.getSheetByName(weekDay).getRange(range);
@@ -362,61 +225,74 @@ function readCells(ssx, range, num, weekDay) {
             var cellValue = values[i][0];
             var cellAddress = "B" + (i + num);
             if (cellValue === "" || cellValue === null) {
-                console.log(cellAddress + " is empty.");
-                console.log(num + " number");
+                Logger.log(cellAddress + " is empty.");
+                Logger.log(num + " number");
                 return {
                     val: (i + num), success: true
                 };
             } else {
-                console.log(cellAddress + " contains a value: " + cellValue);
+                Logger.log(cellAddress + " contains a value: " + cellValue);
             }
         }
-        console.log("All cells are full, I must move to the 2nd next day.")
+        Logger.log("All cells are full, I must move to the 2nd next day.")
         return { val: null, success: false };
     } catch (e) {
-        console.log("no such day. " + e.message);
+        Logger.log("no such day. " + e.message);
         return { val: null, success: false };
 
 
     }
 }
-/*
-appends requests to available and requested slots
-@params: spreadhseet id, starting row, starting column, values, week day
-@pre: must have sufficient space in spreasheet, correct names/ids
-@post: will write a record to the spreadsheet.
-*/
+
 function addRecord(ssx, row, column, values, dayOfWeek) {
     let sheet = ssx.getSheetByName(dayOfWeek);
     sheet.getRange(row, column, values.length, values[0].length).setValues(values);
     autoEmail(values[0][1], 'Guidance Appointment Confirmation', 'Your request has been logged in our waitlist. Please await a confirmation email within the following day.');
 }
-/*
-sned automatic emails
-@params: recipient email, subject, body
-@pre: msut recieve correct args when called
-@post: will send email
-*/
+
 function autoEmail(email, subject, body) {
-    console.log(email);
+    Logger.log(email);
     try {
         MailApp.sendEmail(email, subject, body);
 
-        console.log("Successfully sent email")
+        Logger.log("Successfully sent email")
 
     } catch (Exception) {
-        console.log("email failed to send: " + Exception.message);
+        Logger.log("email failed to send: " + Exception.message);
     }
 }
 
 
-/* 
-runs confirm check on a timely basis for each seperate sheet
-i have no clue what I meant here by confirm.... uh OH.
-@params: n/a
-@pre: n/a
-@post: runs confirm check
-*/
+function runAdd() {
+    createSheets(teach1);
+    createSheets(teach2);
+    createSheets(teach3);
+}
+
+function createSheets(ssx) {
+    var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+    Logger.log("Deleting and replacing");
+    // deletion process, if same name found, delete it.
+    weekdays.forEach(function (day) { //beautiful for each
+        var s = ssx.getSheetByName(day);
+        if (s) {
+            ssx.deleteSheet(s); //if it finds the same name
+        }
+    });
+
+    //now that its ensured that the previous ones are gone, make a new batch
+
+    const rangeToCopy = ssx.getSheetByName("Template").getDataRange();
+    weekdays.forEach(function (day) {
+        const newSheet = ssx.insertSheet(day);
+        Logger.log("It should have made a new one by now");
+        rangeToCopy.copyTo(newSheet.getRange(1, 1));
+    });
+
+}
+
+
 //ew this is so bad I hate it i hate it i hate it i hate it i hate it i hate it 
 function checkRun() {
     confirmCheck(teach1, 3);
@@ -435,107 +311,21 @@ function checkRun() {
     confirmCheck(teach3, 30);
     confirmCheck(teach3, 39);
 }
-/*
-checks the value of checkbox at specific range, if selected, runs autoEmail
-@params: spreasheet id, range of data to check
-@pre: n/a
-@post: confirmation email is sent
-*/
+
 function confirmCheck(ssx, range) { //because I dont have the program working across multiple days, I unfortunately won't need to inform the user of their day of week
     var emails = ssx.getActiveSheet().getRange(range).getValues();
     var times = ssx.getActiveSheet().getRange(range).getValues();
     var checks = ssx.getActiveSheet().getRange(range).getValues();
-    console.log(checks);
+    Logger.log(checks);
     for (var i = 0; i < 7; i++) {
-        console.log(i);
-        console.log(emails[0][i] + 'email');
-        console.log(checks[0][i] + " hi");
+        Logger.log(i);
+        Logger.log(emails[0][i] + 'email');
+        Logger.log(checks[0][i] + " hi");
         if (checks[0][i]) {
             autoEmail(emails[0][i], "Confirmed", "Your time is at: " + times[0][i]);
         }
     }
-}
-
-/*
-test function
-*/
-
-function testGetSheetName() {
-    findSheetDay(teach1, 20250130);
-}
-
-/*
-    handels the sorting and consesecutive search
-    @params: teacherSheet (spreadsheet), date to search for
-    @pre: n/a
-    @post: returns the index
-*/
-
-function findSheetDay(teacherSheet, date) { //when you pass in a spreadsheet, it will search for that spreasheet
-    const smallSheet = teacherSheet.getSheets();
-
-    const sheetNames = smallSheet.map(smallSheet => smallSheet.getName()); // made an array with all of the names of the sheets
-
-    //makes the number easier to sort 
-
-    for (let i = 0; i < sheetNames.length; i++) {
-        sheetNames[i] = sheetNames[i].replace("-", "");
-        sheetNames[i] = sheetNames[i].replace("-", "");
-    }
 
 
-    sortDays(sheetNames);
-    console.log(sheetNames);
 
-    console.log(binarySearch(sheetNames, date, sheetNames.length - 1, 0));
-    // console.log(index);
-
-}
-/*
-    sorts with insertion sort ascending 
-    @params: sheetNames, the array to sort (has sheet names as integers in it)
-    @pre: sheetNames has to have the hyphens removed
-    @post: sorted array
-*/
-function sortDays(sheetNames) { //ascending sort
-
-    for (let i = 1; i < sheetNames.length; i++) {
-
-        let j = i - 1;
-        const temp = sheetNames[i]; //temp is the further one
-
-        while (j >= 0 && sheetNames[j] > temp) { //wanna compare temp to each element in the array, and move the ones that are smaller 
-            sheetNames[j + 1] = sheetNames[j]; //the next one is equal to previous, smaller is moved back
-
-            j--;
-        }
-        sheetNames[j + 1] = temp; //when it find a spot that isnt bigger than the next, place it there.
-    }
-}
-/*
-    binary search function to find the index of the sheet with the same date
-    @params: array to search, date to search for, max index, min index
-    @pre: n/a
-    @post: return valid index or break recursion
-*/
-
-function binarySearch(array, date, max, min) {
-    let m = Math.floor((max + min) / 2);
-
-    console.log(array[m] + " " + m + " array, index");
-
-    if (min > max) //if m exeeds these bounds then the date is just not in the thing
-        return -1;
-
-    if (array[m] == date) {
-        console.log("were here");
-        return m;
-    }
-
-    if (date > array[m]) {//is it in the top half or second??? 
-        console.log("calling again, it's greater");
-        return binarySearch(array, date, max, m + 1) //you have to shift the middle 
-    }
-    if (date < array[m])//its below the middle point
-        return binarySearch(array, date, m - 1, min) //already checked m so change that value
 }

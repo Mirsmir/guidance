@@ -17,10 +17,6 @@ use Apps Script API to allow clasp tool to interact with project  code
   google sheet requestForm
    
 HOLY CRAP, CLASP IS SO COOL, IVE NEVER USED IT BUT ITS SO COOL HOW IT WORKS WOAHHHH
-im so sad coding club is almost over, it was such a fun time
-i want to see the gr 12s again 
-i should graduate this year instead
-webscraping it so coool
 
 
 typescript, autocomplter
