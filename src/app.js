@@ -9,9 +9,9 @@ It manages automatic emails for reminders and updates.
 const ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1btTT5Ns4p90v53gnw1ulDOMByTYSpj33zy9YO99G2kE/edit?resourcekey=&gid=375523362#gid=375523362');
 const MailApp = GmailApp;
 // const sheetName = Utilities.formatperiod(day, Session.getScriptTimeZone(), "MM/dd/yyyy");
-const teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1qr3CVw9SAR-xFSaGGi9gpSXyujdP9pb3wbyHGdF89DE/edit?gid=0#gid=0'); //avery
-const teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1hCOdZW6d1kWZoFX9n8V5CyKuLtORy90PrCHxgF1R2TI/edit?gid=0#gid=0'); //dacey
-const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1IGNt9RAm6-Re4BIWc7GJl7q-oL-tLDwE4WNLinb4sc0/edit?gid=0#gid=0'); //kim
+const teach1 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1eioOaMwrQUxalwGWwVD7Eydo1A4IhUf8Um9ffxPwpXk/edit?usp=sharing'); //avery
+const teach2 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/19OAxHokVsJnHfZ_wA73u6-OabCnM2F8EfFXKwL0x0Zw/edit?usp=sharing'); //dacey
+const teach3 = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1yNM_rRqIvMR1Ael68CZekEE1bVrzQTy8vF4YgH0Iy8Q/edit?usp=sharing'); //kim
 
 
 function submit() {
