@@ -418,3 +418,80 @@ Frontend UI for guidance appointment booking system at Sir William Mulock. Makes
 </body>
 
 </html>
+
+
+
+
+<script> 
+    //cookie implementation for later use of authentication (gunna use session cookies) 
+
+    //******************************************************************
+
+    //LOCAL STORAGE: 
+
+    const result = document.getElementById('result');
+    const setBtn = document.getElementById('setBtn');
+    const getBtn = document.getElementById('getBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+
+    function setStorage() {
+        if(localStorage.getItem("Username") !== null)
+            result.innerHTML =  `Storage is already settled`;
+        else
+            localStorage.setItem("Username", "rahacl emsirnov");    
+    }
+
+    function getStorage(){
+        if(localStorage.getItem("Username") !== null)
+            result.innerHTML =  `Storage: <b>${localStorage.getItem("Username")}</b>`;
+        else
+            result.innerHTML =  `Please set the storage first!!`;    
+    }
+
+    function delStorage(){
+        if(localStorage.getItem("Username") !== null)
+            localStorage.clear();   
+        else
+            result.innerHTML =  `No storage available to delete!!`;    
+    }
+
+    setBtn.addEventListener('click', setStorage);
+    getBtn.addEventListener('click', getStorage);
+    deleteBtn.addEventListener('click', delStorage);
+
+    //******************************************************************
+
+    //COOKIE IMPLEMENTATION: 
+
+    result = document.getElementById('result');
+    setBtn = document.getElementById('setBtn');
+    getBtn = document.getElementById('getBtn');
+
+    function setCookie() {
+        if(document.cookie.length !== 0){
+            result.innerHTML = 
+              `Cookie is already settled!!`;
+        }
+        else{
+            document.cookie = 
+              "visitorname: rahcek lsmirnov; ";
+        }
+        
+    }
+
+    function getCookie(){
+        if(document.cookie.length !== 0){
+            result.innerHTML = 
+              `Cookie: <b>${document.cookie}</b>`;
+        }
+        else{
+            result.innerHTML = 
+              `Please set the cookie first!!`;
+        }
+    }
+
+    setBtn.addEventListener('click', setCookie);
+    getBtn.addEventListener('click', getCookie);
+
+</script>
+
