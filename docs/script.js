@@ -35,7 +35,6 @@ function getValue() {
 */
 
 //make sure it sends the actual values of the html page
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function relaodForm() {
 
     const checkboxes = document.querySelectorAll('input[type="checkbox"]'); //idk if getElementById("period") would work
